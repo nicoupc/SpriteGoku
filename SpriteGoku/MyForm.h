@@ -45,6 +45,9 @@ namespace SpriteGoku {
 			int xInicio = 700 - spriteAncho - recorrido;
 			mundos[1]->agregarPatrullaSD("Boo.png", xInicio, 0, 15, 22, 12);
 			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 22, 12);
+
+			mundos[1]->agregarPerseguidor("Wolf.png", 600, 400, 9);
+			mundos[0]->agregarPerseguidor("Night.png", 600, 400, 9);
 		}
 
 	protected:
@@ -107,7 +110,7 @@ namespace SpriteGoku {
 		buffer->Graphics->Clear(Color::White);
 		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
-		
+		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 		buffer->Render(g);
 
 		// Limpiar los recursos

@@ -38,5 +38,8 @@
     <ClInclude Include="CEnemigoPatrullaSD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemigoPerseguidor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

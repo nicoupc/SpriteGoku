@@ -45,6 +45,9 @@ public:
 		y += dy;
 	}
 
+	int obtenerX() { return x; }
+	int obtenerY() { return y; }
+
 	void mover(BufferedGraphics^ buffer, Bitmap^ bmp)
 	{
 		switch (direccion)

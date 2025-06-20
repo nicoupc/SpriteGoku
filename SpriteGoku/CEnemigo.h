@@ -23,8 +23,7 @@ public:
 		y = py;
 	}
 
-	// Clase base abstracta para diferentes tipos de enemigos
-	virtual void mover() = 0; 
+	virtual void mover() {} // método virtual, pero NO puro
 
 	void dibujar(Graphics^ g) {
 		Rectangle origen = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
