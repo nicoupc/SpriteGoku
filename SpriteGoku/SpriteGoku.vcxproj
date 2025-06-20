@@ -125,6 +125,7 @@
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CEnemigo.h" />
     <ClInclude Include="Cjugador.h" />
     <ClInclude Include="CMundo.h" />
     <ClInclude Include="MyForm.h">

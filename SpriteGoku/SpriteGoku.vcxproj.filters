@@ -29,5 +29,8 @@
     <ClInclude Include="CMundo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemigo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
