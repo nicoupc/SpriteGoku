@@ -32,7 +32,10 @@
     <ClInclude Include="CEnemigo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemigoPatrulla.h">
+    <ClInclude Include="CEnemigoPatrullaSI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemigoPatrullaSD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

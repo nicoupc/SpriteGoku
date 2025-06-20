@@ -1,7 +1,7 @@
 #pragma once
 #include "CEnemigo.h"
 
-ref class CEnemigoPatrulla : public CEnemigo {
+ref class CEnemigoPatrullaSI : public CEnemigo {
 private:
     int estado = 0;
     int distancia = 0;
@@ -11,7 +11,7 @@ private:
 	int velocidad;
 
 public:
-    CEnemigoPatrulla(String^ ruta, int px, int py, int alto, int largo, int vel)
+    CEnemigoPatrullaSI(String^ ruta, int px, int py, int alto, int largo, int vel)
         : CEnemigo(ruta, px, py)
     {
         inicioX = px;

@@ -36,9 +36,15 @@ namespace SpriteGoku {
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
 			mundos[2] = gcnew CMundo("Mundo3.JPG");
 
-			mundos[0]->agregarPatrulla("Dark.png", 10, 180, 15, 15, 12);
+			mundos[0]->agregarPatrullaSI("Dark.png", 10, 180, 15, 15, 12);
 
-			mundos[1]->agregarPatrulla("Freezer.png", 10, 180, 15, 15, 12);
+			mundos[1]->agregarPatrullaSI("Freezer.png", 10, 180, 15, 15, 12);
+
+			int spriteAncho = 32;
+			int recorrido = 15;
+			int xInicio = 700 - spriteAncho - recorrido;
+			mundos[1]->agregarPatrullaSD("Boo.png", xInicio, 0, 15, 15, 12);
+			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 15, 12);
 		}
 
 	protected:

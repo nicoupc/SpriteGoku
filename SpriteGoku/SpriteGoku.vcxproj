@@ -126,7 +126,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CEnemigo.h" />
-    <ClInclude Include="CEnemigoPatrulla.h" />
+    <ClInclude Include="CEnemigoPatrullaSI.h" />
+    <ClInclude Include="CEnemigoPatrullaSD.h" />
     <ClInclude Include="Cjugador.h" />
     <ClInclude Include="CMundo.h" />
     <ClInclude Include="MyForm.h">
