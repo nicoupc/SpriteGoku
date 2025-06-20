@@ -26,5 +26,8 @@
     <ClInclude Include="Cjugador.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CMundo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

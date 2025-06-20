@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CJugador.h"
+#include "CMundo.h"
 
 namespace SpriteGoku {
 
@@ -17,11 +18,10 @@ namespace SpriteGoku {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	private:
-		CJugador* jugador = new CJugador(100, 100);
+		CJugador* jugador = new CJugador(300, 200);
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
-		Bitmap^ fondo = gcnew Bitmap("Mundo3.JPG");
+		array<CMundo^>^ mundos;
 		int mundoActual = 2;
-		array<Bitmap^>^ fondos = gcnew array<Bitmap^>(3);
 
 	public:
 		MyForm(void)
@@ -30,9 +30,10 @@ namespace SpriteGoku {
 			//
 			//TODO: Add the constructor code here
 			//
-			fondos[0] = gcnew Bitmap("Mundo1.jpg");
-			fondos[1] = gcnew Bitmap("Mundo2.jpg");
-			fondos[2] = gcnew Bitmap("Mundo3.JPG");
+			mundos = gcnew array<CMundo^>(3);
+			mundos[0] = gcnew CMundo("Mundo1.jpg");
+			mundos[1] = gcnew CMundo("Mundo2.jpg");
+			mundos[2] = gcnew CMundo("Mundo3.JPG");
 		}
 
 	protected:
@@ -93,7 +94,7 @@ namespace SpriteGoku {
 		BufferedGraphicsContext^ context = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
-		buffer->Graphics->DrawImage(fondos[mundoActual], 0, 0, this->ClientSize.Width, this->ClientSize.Height);
+		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
 		buffer->Render(g);
 
