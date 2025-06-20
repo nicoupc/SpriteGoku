@@ -59,7 +59,7 @@ public:
 			{
 				indiceY = 0;
 			}
-			dy = -10;
+			dy = -15;
 			dx = 0;
 			ultimaTecla = Arriba;
 			break;
@@ -74,7 +74,7 @@ public:
 			{
 				indiceY = 0;
 			}
-			dy = 10;
+			dy = 15;
 			dx = 0;
 			ultimaTecla = Abajo;
 			break;
@@ -90,7 +90,7 @@ public:
 				indiceY = 0;
 			}
 			dy = 0;
-			dx = -10;
+			dx = -15;
 			ultimaTecla = Izquierda;
 			break;
 
@@ -105,7 +105,7 @@ public:
 				indiceY = 0;
 			}
 			dy = 0;
-			dx = 10;
+			dx = 15;
 			ultimaTecla = Derecha;
 			break;
 
