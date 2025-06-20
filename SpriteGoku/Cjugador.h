@@ -136,5 +136,12 @@ public:
 			break;
 		}
 		dibujar(buffer, bmp);
+
+		// Limitar el movimiento del jugador a los bordes arriba y abajo de la pantalla
+		if (y < 0) y = 0; // Limite superior
+		if (y + alto * 2 > buffer->Graphics->VisibleClipBounds.Height) 
+		{
+			y = buffer->Graphics->VisibleClipBounds.Height - alto * 2; // Limite inferior
+		}
 	}
 };
