@@ -20,7 +20,6 @@ namespace SpriteGoku {
 	{
 	private:
 		CJugador* jugador = new CJugador(300, 200);
-		CEnemigo^ enemigo;
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
 		array<CMundo^>^ mundos;
 		int mundoActual = 2;
@@ -36,7 +35,11 @@ namespace SpriteGoku {
 			mundos[0] = gcnew CMundo("Mundo1.jpg");
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
 			mundos[2] = gcnew CMundo("Mundo3.JPG");
-			enemigo = gcnew CEnemigo("Boo.png", 100, 100);
+
+			mundos[0]->agregarEnemigo("Freezer.png", 100, 100);
+			mundos[0]->agregarEnemigo("Majinbuu.png", 400, 100);
+			mundos[0]->agregarEnemigo("Boo.png", 400, 250);
+			mundos[0]->agregarEnemigo("Piccolo.png", 100, 250);
 		}
 
 	protected:
@@ -80,7 +83,7 @@ namespace SpriteGoku {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(900, 600);
+			this->ClientSize = System::Drawing::Size(1000, 600);
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"MyForm";
@@ -99,10 +102,7 @@ namespace SpriteGoku {
 		buffer->Graphics->Clear(Color::White);
 		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
-		if (mundoActual == 0) {
-			enemigo->mover();
-			enemigo->dibujar(buffer->Graphics);
-		}
+		
 		buffer->Render(g);
 
 		// Limpiar los recursos
