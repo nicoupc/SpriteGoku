@@ -12,6 +12,7 @@ namespace SpriteGoku {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Diagnostics;
 
 	/// <summary>
 	/// Summary for MyForm
@@ -23,6 +24,12 @@ namespace SpriteGoku {
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
 		array<CMundo^>^ mundos;
 		int mundoActual = 2;
+		int tiempoRestante = 120;              // Tiempo en segundos
+		int vidas = 3;                         // Cantidad inicial de vidas
+		int framesAcumulados = 0;             // Para contar tiempo usando los ticks del timer
+		System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 18, FontStyle::Bold);
+		Brush^ brocha = Brushes::White;
+		Stopwatch^ relojTiempo = gcnew Stopwatch();
 
 	public:
 		MyForm(void)
@@ -31,6 +38,7 @@ namespace SpriteGoku {
 			//
 			//TODO: Add the constructor code here
 			//
+			relojTiempo->Start();
 			mundos = gcnew array<CMundo^>(3);
 			mundos[0] = gcnew CMundo("Mundo1.jpg");
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
@@ -107,10 +115,28 @@ namespace SpriteGoku {
 
 		BufferedGraphicsContext^ context = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
+
 		buffer->Graphics->Clear(Color::White);
 		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
+
+		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);
+		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, brocha, 10, 35);
+
+		static int segundosPasados = 0;
+		int totalSegundos = relojTiempo->ElapsedMilliseconds / 1000;
+
+		if (totalSegundos > segundosPasados) {
+			tiempoRestante--;
+			segundosPasados = totalSegundos;
+		}
+
+		if (tiempoRestante <= 0 || vidas <= 0) {
+			buffer->Graphics->DrawString("¡Fin del juego!", fuente, Brushes::Red, 500, 400);
+			timer1->Enabled = false;
+		}
+
 		buffer->Render(g);
 
 		// Limpiar los recursos
