@@ -32,5 +32,8 @@
     <ClInclude Include="CEnemigo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemigoPatrulla.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

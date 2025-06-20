@@ -19,7 +19,7 @@ namespace SpriteGoku {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	private:
-		CJugador* jugador = new CJugador(300, 200);
+		CJugador* jugador = new CJugador(400, 300);
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
 		array<CMundo^>^ mundos;
 		int mundoActual = 2;
@@ -36,10 +36,9 @@ namespace SpriteGoku {
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
 			mundos[2] = gcnew CMundo("Mundo3.JPG");
 
-			mundos[0]->agregarEnemigo("Freezer.png", 100, 100);
-			mundos[0]->agregarEnemigo("Majinbuu.png", 400, 100);
-			mundos[0]->agregarEnemigo("Boo.png", 400, 250);
-			mundos[0]->agregarEnemigo("Piccolo.png", 100, 250);
+			mundos[0]->agregarPatrulla("Dark.png", 10, 180, 15, 15, 12);
+
+			mundos[1]->agregarPatrulla("Freezer.png", 10, 180, 15, 15, 12);
 		}
 
 	protected:
@@ -83,7 +82,7 @@ namespace SpriteGoku {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1000, 600);
+			this->ClientSize = System::Drawing::Size(1200, 800);
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"MyForm";

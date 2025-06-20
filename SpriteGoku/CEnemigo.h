@@ -3,7 +3,7 @@ using namespace System;
 using namespace System::Drawing;
 
 ref class CEnemigo {
-private:
+protected:
 	int x, y;
 	int ancho, alto;
 	int indiceX = 0;
@@ -23,24 +23,8 @@ public:
 		y = py;
 	}
 
-	void mover() {
-		if (direccion == 0) {
-			x += 4;
-			indiceY = 2; // derecha
-		}
-		else {
-			x -= 4;
-			indiceY = 1; // izquierda
-		}
-
-		indiceX = (indiceX + 1) % 4;
-		pasos++;
-
-		if (pasos >= 20) {
-			pasos = 0;
-			direccion = (direccion + 1) % 2;
-		}
-	}
+	// Clase base abstracta para diferentes tipos de enemigos
+	virtual void mover() = 0; 
 
 	void dibujar(Graphics^ g) {
 		Rectangle origen = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);

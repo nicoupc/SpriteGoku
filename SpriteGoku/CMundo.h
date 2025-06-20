@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CEnemigo.h"
+#include "CEnemigoPatrulla.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -26,7 +27,11 @@ public:
         }
     }
 
-    void agregarEnemigo(String^ ruta, int x, int y) {
+    /*void agregarEnemigo(String^ ruta, int x, int y) {
         enemigos->Add(gcnew CEnemigo(ruta, x, y));
+    }*/
+
+	void agregarPatrulla(String^ ruta, int x, int y, int subirAltura, int irDerecha, int velocidad) {
+		enemigos->Add(gcnew CEnemigoPatrulla(ruta, x, y, subirAltura, irDerecha, velocidad));
     }
 };
