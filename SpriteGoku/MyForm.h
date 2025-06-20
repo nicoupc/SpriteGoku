@@ -19,6 +19,7 @@ namespace SpriteGoku {
 	private:
 		CJugador* jugador = new CJugador(100, 100);
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
+		Bitmap^ fondo = gcnew Bitmap("Field.JPG");
 
 	public:
 		MyForm(void)
@@ -70,7 +71,9 @@ namespace SpriteGoku {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(452, 431);
+			this->ClientSize = System::Drawing::Size(900, 600);
+			this->MaximizeBox = false;
+			this->MinimizeBox = false;
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
@@ -85,6 +88,7 @@ namespace SpriteGoku {
 		BufferedGraphicsContext^ context = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
+		buffer->Graphics->DrawImage(fondo, 0, 0, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
 		buffer->Render(g);
 		delete buffer;
