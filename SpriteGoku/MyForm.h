@@ -19,7 +19,9 @@ namespace SpriteGoku {
 	private:
 		CJugador* jugador = new CJugador(100, 100);
 		Bitmap^ bmp = gcnew Bitmap("Goku.png");
-		Bitmap^ fondo = gcnew Bitmap("Field.JPG");
+		Bitmap^ fondo = gcnew Bitmap("Mundo3.JPG");
+		int mundoActual = 2;
+		array<Bitmap^>^ fondos = gcnew array<Bitmap^>(3);
 
 	public:
 		MyForm(void)
@@ -28,6 +30,9 @@ namespace SpriteGoku {
 			//
 			//TODO: Add the constructor code here
 			//
+			fondos[0] = gcnew Bitmap("Mundo1.jpg");
+			fondos[1] = gcnew Bitmap("Mundo2.jpg");
+			fondos[2] = gcnew Bitmap("Mundo3.JPG");
 		}
 
 	protected:
@@ -88,9 +93,11 @@ namespace SpriteGoku {
 		BufferedGraphicsContext^ context = BufferedGraphicsManager::Current;
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
 		buffer->Graphics->Clear(Color::White);
-		buffer->Graphics->DrawImage(fondo, 0, 0, this->ClientSize.Width, this->ClientSize.Height);
+		buffer->Graphics->DrawImage(fondos[mundoActual], 0, 0, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
 		buffer->Render(g);
+
+		// Limpiar los recursos
 		delete buffer;
 		delete context;
 		delete g;
@@ -117,6 +124,10 @@ namespace SpriteGoku {
 			jugador->direccion = Direcciones::Ninguna;
 			break;
 		}
+
+		if (e->KeyCode == Keys::D1) mundoActual = 0;
+		else if (e->KeyCode == Keys::D2) mundoActual = 1;
+		else if (e->KeyCode == Keys::D3) mundoActual = 2;
 	}
 	};
 }

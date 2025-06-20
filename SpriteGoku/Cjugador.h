@@ -143,5 +143,10 @@ public:
 		{
 			y = buffer->Graphics->VisibleClipBounds.Height - alto * 2; // Limite inferior
 		}
+		if (x < 0) x = 0; // Limite izquierdo
+		if (x + ancho * 2 > buffer->Graphics->VisibleClipBounds.Width) 
+		{
+			x = buffer->Graphics->VisibleClipBounds.Width - ancho * 2; // Limite derecho
+		}
 	}
 };
