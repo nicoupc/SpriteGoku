@@ -30,6 +30,8 @@ namespace SpriteGoku {
 		System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 18, FontStyle::Bold);
 		Brush^ brocha = Brushes::White;
 		Stopwatch^ relojTiempo = gcnew Stopwatch();
+		bool invulnerable = false;
+		int tiempoInvulnerabilidad = 0;
 
 	public:
 		MyForm(void)
@@ -133,8 +135,21 @@ namespace SpriteGoku {
 		}
 
 		if (tiempoRestante <= 0 || vidas <= 0) {
-			buffer->Graphics->DrawString("¡Fin del juego!", fuente, Brushes::Red, 500, 400);
+			buffer->Graphics->DrawString("¡Fin del juego!", fuente, Brushes::Red, 400, 300);
 			timer1->Enabled = false;
+		}
+
+		if (!invulnerable && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {
+			vidas--;
+			invulnerable = true;
+			tiempoInvulnerabilidad = 20; // 2 segundos si usás 60 FPS
+		}
+
+		if (invulnerable) {
+			tiempoInvulnerabilidad--;
+			if (tiempoInvulnerabilidad <= 0) {
+				invulnerable = false;
+			}
 		}
 
 		buffer->Render(g);

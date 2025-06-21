@@ -51,4 +51,19 @@ public:
 			perseguidor->moverHacia(jugadorX, jugadorY);
 		}
 	}
+
+	bool detectarColision(Rectangle jugadorRect) {
+		for each (CEnemigo ^ e in enemigos) {
+			if (jugadorRect.IntersectsWith(e->obtenerRectangulo())) {
+				return true;
+			}
+		}
+
+		// También verificar con el perseguidor
+		if (perseguidor != nullptr && jugadorRect.IntersectsWith(perseguidor->obtenerRectangulo())) {
+			return true;
+		}
+
+		return false;
+	}
 };

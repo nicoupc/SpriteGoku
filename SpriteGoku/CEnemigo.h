@@ -29,5 +29,11 @@ public:
 		Rectangle origen = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle destino = Rectangle(x, y, escalaAncho, escalaAlto);
 		g->DrawImage(sprite, destino, origen, GraphicsUnit::Pixel);
+		g->DrawRectangle(gcnew Pen(Color::Red), obtenerRectangulo());
+
+	}
+
+	Rectangle obtenerRectangulo() {
+		return Rectangle(x + 15, y + 15, (ancho * 2) - 30, (alto * 2) - 30);
 	}
 };

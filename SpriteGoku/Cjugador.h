@@ -40,6 +40,8 @@ public:
 		Rectangle posicion = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle aumentoPersonaje = Rectangle(x, y, ancho * 2, alto * 2);
 		buffer->Graphics->DrawImage(bmp, aumentoPersonaje, posicion, GraphicsUnit::Pixel);
+		buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
+
 
 		x += dx;
 		y += dy;
@@ -47,6 +49,10 @@ public:
 
 	int obtenerX() { return x; }
 	int obtenerY() { return y; }
+
+	Rectangle obtenerRectangulo() {
+		return Rectangle(x + 15, y + 15, ancho * 2 - 20, alto * 2 - 20);
+	}
 
 	void mover(BufferedGraphics^ buffer, Bitmap^ bmp)
 	{
