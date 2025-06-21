@@ -36,6 +36,9 @@ namespace SpriteGoku {
 		bool escudoActivo = false;
 		int duracionEscudo = 10; // en segundos
 		Stopwatch^ relojEscudo = gcnew Stopwatch();
+		bool velocidadActiva = false;
+		int duracionVelocidad = 5; // segundos
+		Stopwatch^ relojVelocidad = gcnew Stopwatch();
 
 	public:
 		MyForm(void)
@@ -60,8 +63,8 @@ namespace SpriteGoku {
 			mundos[1]->agregarPatrullaSD("Boo.png", xInicio, 0, 15, 22, 12);
 			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 22, 12);
 
-			mundos[1]->agregarPerseguidor("Wolf.png", 600, 400, 9);
-			mundos[0]->agregarPerseguidor("Night.png", 600, 400, 9);
+			mundos[1]->agregarPerseguidor("Wolf.png", 450, 600, 9);
+			mundos[0]->agregarPerseguidor("Night.png", 450, 600, 9);
 
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
@@ -143,18 +146,28 @@ namespace SpriteGoku {
 					escudoActivo = true;
 					invulnerable = true;
 				}
+
+				// Activar velocidad si el aliado es de tipo velocidad
+				if (dynamic_cast<CAliadoVelocidad^>(a) != nullptr) {
+					relojVelocidad->Restart();
+					velocidadActiva = true;
+					jugador->activarVelocidad(2.0f); // Velocidad x2
+				}
 			}
 		}
 
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);
-		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, brocha, 10, 35);
+		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, Brushes::OrangeRed, 10, 35);
 		if (escudoActivo) {
 			int tiempoRestante = duracionEscudo - (relojEscudo->ElapsedMilliseconds / 1000);
 			buffer->Graphics->DrawString("ESCUDO: " + tiempoRestante.ToString() + "s", fuente, Brushes::LightBlue, 10, 60);
 		}
-
+		if (velocidadActiva) {
+			int tiempoRestVel = duracionVelocidad - (relojVelocidad->ElapsedMilliseconds / 1000);
+			buffer->Graphics->DrawString("VELOCIDAD: " + tiempoRestVel.ToString() + "s", fuente, Brushes::GreenYellow, 10, 85);
+		}
 
 		static int segundosPasados = 0;
 		int totalSegundos = relojTiempo->ElapsedMilliseconds / 1000;
@@ -185,6 +198,13 @@ namespace SpriteGoku {
 		if (escudoActivo) {
 			if (relojEscudo->ElapsedMilliseconds >= duracionEscudo * 1000) {
 				escudoActivo = false;
+			}
+		}
+
+		if (velocidadActiva) {
+			if (relojVelocidad->ElapsedMilliseconds >= duracionVelocidad * 1000) {
+				velocidadActiva = false;
+				jugador->restaurarVelocidad();
 			}
 		}
 

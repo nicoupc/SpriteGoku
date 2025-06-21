@@ -14,6 +14,7 @@ class CJugador
 	int indiceX, indiceY;
 	Direcciones ultimaTecla;
 	int tiempoInvulnerabilidad = 0;
+	float factorVelocidad = 1.0f;
 
 public:
 	CJugador();
@@ -59,6 +60,15 @@ public:
 	int obtenerX() { return x; }
 	int obtenerY() { return y; }
 
+	void activarVelocidad(float factor) {
+		factorVelocidad = factor;
+	}
+
+	void restaurarVelocidad() {
+		factorVelocidad = 1.0f;
+	}
+
+
 	Rectangle obtenerRectangulo() {
 		return Rectangle(x + 10, y + 25, ancho * 2 - 25, alto * 2 - 30);
 	}
@@ -70,7 +80,7 @@ public:
 		case Abajo:
 			indiceY = 0;
 			indiceX = (indiceX + 1) % 4;
-			dy = 15;
+			dy = static_cast<int>(15 * factorVelocidad);
 			dx = 0;
 			ultimaTecla = Abajo;
 			break;
@@ -79,7 +89,7 @@ public:
 			indiceY = 1;
 			indiceX = (indiceX + 1) % 4;
 			dy = 0;
-			dx = -15;
+			dx = -static_cast<int>(15 * factorVelocidad);
 			ultimaTecla = Izquierda;
 			break;
 
@@ -87,14 +97,14 @@ public:
 			indiceY = 2;
 			indiceX = (indiceX + 1) % 4;
 			dy = 0;
-			dx = 15;
+			dx = static_cast<int>(15 * factorVelocidad);
 			ultimaTecla = Derecha;
 			break;
 
 		case Arriba:
 			indiceY = 3;
 			indiceX = (indiceX + 1) % 4;
-			dy = -15;
+			dy = -static_cast<int>(15 * factorVelocidad);
 			dx = 0;
 			ultimaTecla = Arriba;
 			break;

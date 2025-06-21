@@ -7,6 +7,7 @@
 #include "CAliado.h"
 #include "CAliadoVida.h"
 #include "CAliadoEscudo.h"
+#include "CAliadoVelocidad.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -33,6 +34,8 @@ public:
 			aliados->Add(aliado1);
 			CAliado^ aliado2 = gcnew CAliadoEscudo("Vegeta.png", 30, 300);
 			aliados->Add(aliado2);
+			CAliado^ aliado3 = gcnew CAliadoVelocidad("Sangohan.png", 830, 300);
+			aliados->Add(aliado3);
 		}
 	}
 
