@@ -4,7 +4,7 @@ using namespace System::Drawing;
 
 enum Direcciones
 {
-	Ninguna, Abajo, Arriba, Izquierda, Derecha
+	Ninguna, Abajo, Izquierda, Derecha, Arriba
 };
 
 class CJugador
@@ -27,8 +27,8 @@ public:
 		this->y = y;
 		dx = 0;
 		dy = 0;
-		ancho = 25; // Ancho del sprite
-		alto = 39; // Alto del sprite
+		ancho = 32;
+		alto = 48;
 		indiceX = 0; // Índice de animación en X
 		indiceY = 0; // Índice de animación en Y
 		direccion = Ninguna;
@@ -60,97 +60,50 @@ public:
 	int obtenerY() { return y; }
 
 	Rectangle obtenerRectangulo() {
-		return Rectangle(x + 15, y + 15, ancho * 2 - 20, alto * 2 - 20);
+		return Rectangle(x + 10, y + 25, ancho * 2 - 25, alto * 2 - 30);
 	}
 
 	void mover(BufferedGraphics^ buffer, Bitmap^ bmp)
 	{
 		switch (direccion)
 		{
-		case Direcciones::Arriba:
-			indiceX = 2;
-			if (indiceY >= 0 && indiceY < 2)
-			{
-				indiceY++;
-			}
-			else
-			{
-				indiceY = 0;
-			}
-			dy = -15;
-			dx = 0;
-			ultimaTecla = Arriba;
-			break;
-
-		case Direcciones::Abajo:
-			indiceX = 0;
-			if (indiceY >= 0 && indiceY < 2)
-			{
-				indiceY++;
-			}
-			else
-			{
-				indiceY = 0;
-			}
+		case Abajo:
+			indiceY = 0;
+			indiceX = (indiceX + 1) % 4;
 			dy = 15;
 			dx = 0;
 			ultimaTecla = Abajo;
 			break;
 
-		case Direcciones::Izquierda:
-			indiceX = 1;
-			if (indiceY >= 0 && indiceY < 2)
-			{
-				indiceY++;
-			}
-			else
-			{
-				indiceY = 0;
-			}
+		case Izquierda:
+			indiceY = 1;
+			indiceX = (indiceX + 1) % 4;
 			dy = 0;
 			dx = -15;
 			ultimaTecla = Izquierda;
 			break;
 
-		case Direcciones::Derecha:
-			indiceX = 3;
-			if (indiceY >= 0 && indiceY < 2)
-			{
-				indiceY++;
-			}
-			else
-			{
-				indiceY = 0;
-			}
+		case Derecha:
+			indiceY = 2;
+			indiceX = (indiceX + 1) % 4;
 			dy = 0;
 			dx = 15;
 			ultimaTecla = Derecha;
 			break;
 
-		case Direcciones::Ninguna:
-			// Si no se mueve, resetea la animación
-			if (ultimaTecla == Arriba)
-			{
-				indiceX = 2;
-				indiceY = 0;
-			}
-			else if (ultimaTecla == Abajo)
-			{
-				indiceX = 0;
-				indiceY = 0;
-			}
-			else if (ultimaTecla == Izquierda)
-			{
-				indiceX = 1;
-				indiceY = 0;
-			}
-			else if (ultimaTecla == Derecha)
-			{
-				indiceX = 3;
-				indiceY = 0;
-			}
-			dy = 0;
+		case Arriba:
+			indiceY = 3;
+			indiceX = (indiceX + 1) % 4;
+			dy = -15;
 			dx = 0;
+			ultimaTecla = Arriba;
+			break;
+
+		case Direcciones::Ninguna:
+			indiceX = 0;
+			dx = 0;
+			dy = 0;
+			indiceY = static_cast<int>(ultimaTecla) - 1; // mantener mirada en la última dirección
 			break;
 		}
 
