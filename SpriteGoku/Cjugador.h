@@ -40,10 +40,10 @@ public:
 		Rectangle aumentoPersonaje = Rectangle(x, y, ancho * 2, alto * 2);
 
 		// Si no está invulnerable o toca renderizar (parpadeo), dibujar al jugador
-		if (!invulnerable || (invulnerable && tiempoInvulnerabilidad % 10 < 5)) {
+		if (!invulnerable || (invulnerable && tiempoInvulnerabilidad % 4 < 2))
+		{
 			buffer->Graphics->DrawImage(bmp, aumentoPersonaje, posicion, GraphicsUnit::Pixel);
 		}
-
 
 		// Dibuja el cuadrado rojo si querés seguir visualizando colisión
 		buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
@@ -55,7 +55,6 @@ public:
 	void setTiempoInvulnerabilidad(int valor) {
 		tiempoInvulnerabilidad = valor;
 	}
-
 
 	int obtenerX() { return x; }
 	int obtenerY() { return y; }
@@ -157,12 +156,12 @@ public:
 
 		// Limitar el movimiento del jugador a los bordes arriba y abajo de la pantalla
 		if (y < 0) y = 0; // Limite superior
-		if (y + alto * 2 > buffer->Graphics->VisibleClipBounds.Height) 
+		if (y + alto * 2 > buffer->Graphics->VisibleClipBounds.Height)
 		{
 			y = buffer->Graphics->VisibleClipBounds.Height - alto * 2; // Limite inferior
 		}
 		if (x < 0) x = 0; // Limite izquierdo
-		if (x + ancho * 2 > buffer->Graphics->VisibleClipBounds.Width) 
+		if (x + ancho * 2 > buffer->Graphics->VisibleClipBounds.Width)
 		{
 			x = buffer->Graphics->VisibleClipBounds.Width - ancho * 2; // Limite derecho
 		}
