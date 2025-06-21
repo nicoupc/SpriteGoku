@@ -125,6 +125,8 @@
     <ClCompile Include="MyForm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAliado.h" />
+    <ClInclude Include="CAliadoVida.h" />
     <ClInclude Include="CEnemigo.h" />
     <ClInclude Include="CEnemigoPatrullaSI.h" />
     <ClInclude Include="CEnemigoPatrullaSD.h" />

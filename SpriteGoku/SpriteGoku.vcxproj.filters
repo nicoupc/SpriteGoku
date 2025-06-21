@@ -41,5 +41,11 @@
     <ClInclude Include="CEnemigoPerseguidor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CAliado.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CAliadoVida.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

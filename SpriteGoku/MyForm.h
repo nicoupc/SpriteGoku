@@ -52,7 +52,7 @@ namespace SpriteGoku {
 
 			int spriteAncho = 32;
 			int recorrido = 90;
-			int xInicio = 700 - spriteAncho - recorrido;
+			int xInicio = 790 - spriteAncho - recorrido;
 			mundos[1]->agregarPatrullaSD("Boo.png", xInicio, 0, 15, 22, 12);
 			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 22, 12);
 
@@ -101,7 +101,7 @@ namespace SpriteGoku {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1200, 800);
+			this->ClientSize = System::Drawing::Size(1300, 900);
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"MyForm";
@@ -124,6 +124,14 @@ namespace SpriteGoku {
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
 
 		jugador->dibujar(buffer, bmp, invulnerable);
+
+		// Procesar colisión con aliados
+		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
+			if (a->estaVisible() && a->colisionaCon(jugador->obtenerRectangulo())) {
+				a->aplicarEfecto(vidas); // Aplica el efecto (ej: +1 vida)
+			}
+		}
+
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);

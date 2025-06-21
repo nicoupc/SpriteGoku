@@ -4,21 +4,33 @@
 #include "CEnemigoPatrullaSI.h"
 #include "CEnemigoPatrullaSD.h"
 #include "CEnemigoPerseguidor.h"
+#include "CAliado.h"
+#include "CAliadoVida.h"
 
 using namespace System;
 using namespace System::Drawing;
 using namespace System::Collections::Generic;
 
 ref class CMundo {
-private:
+protected:
 	Bitmap^ fondo;
 	List<CEnemigo^>^ enemigos;
 	CEnemigoPerseguidor^ perseguidor;
+	
+public: List<CAliado^>^ aliados;
 
 public:
 	CMundo(String^ rutaFondo) {
 		fondo = gcnew Bitmap(rutaFondo);
 		enemigos = gcnew List<CEnemigo^>();
+
+		aliados = gcnew List<CAliado^>();
+
+		// Solo crear aliados en mundo 0 y 1
+		if (rutaFondo->Contains("Mundo1") || rutaFondo->Contains("Mundo2")) {
+			CAliado^ aliado1 = gcnew CAliadoVida("Sakura.png", 350, 0);
+			aliados->Add(aliado1);
+		}
 	}
 
 	void dibujar(Graphics^ g, int ancho, int alto) {
@@ -31,6 +43,11 @@ public:
 
 		if (perseguidor != nullptr) {
 			perseguidor->dibujar(g);
+		}
+
+		for each (CAliado ^ a in aliados) {
+			a->mover();
+			a->dibujar(g);
 		}
 	}
 
