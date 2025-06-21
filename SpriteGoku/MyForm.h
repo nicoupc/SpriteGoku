@@ -21,7 +21,7 @@ namespace SpriteGoku {
 	{
 	private:
 		CJugador* jugador = new CJugador(400, 300);
-		Bitmap^ bmp = gcnew Bitmap("Goku01.png");
+		Bitmap^ bmp = gcnew Bitmap("Goku.png");
 		array<CMundo^>^ mundos;
 		int mundoActual = 2;
 		int tiempoRestante = 120;              // Tiempo en segundos
