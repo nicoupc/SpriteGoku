@@ -17,8 +17,8 @@ public:
 		if (!visible) return;
 
 		// Movimiento horizontal suave
-		if (direccion == 0) x += 5;
-		else x -= 5;
+		if (direccion == 0) x += 3;
+		else x -= 3;
 
 		pasos++;
 		indiceX = (indiceX + 1) % 4;

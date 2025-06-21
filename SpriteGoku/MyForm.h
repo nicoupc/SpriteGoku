@@ -21,7 +21,8 @@ namespace SpriteGoku {
 	{
 	private:
 		CJugador* jugador = new CJugador(400, 300);
-		Bitmap^ bmp = gcnew Bitmap("Goku.png");
+		Bitmap^ bmp;
+		Bitmap^ bmpEscudo;
 		array<CMundo^>^ mundos;
 		int mundoActual = 2;
 		int tiempoRestante = 120;              // Tiempo en segundos
@@ -32,6 +33,9 @@ namespace SpriteGoku {
 		Stopwatch^ relojTiempo = gcnew Stopwatch();
 		bool invulnerable = false;
 		int tiempoInvulnerabilidad = 0;
+		bool escudoActivo = false;
+		int duracionEscudo = 10; // en segundos
+		Stopwatch^ relojEscudo = gcnew Stopwatch();
 
 	public:
 		MyForm(void)
@@ -58,6 +62,9 @@ namespace SpriteGoku {
 
 			mundos[1]->agregarPerseguidor("Wolf.png", 600, 400, 9);
 			mundos[0]->agregarPerseguidor("Night.png", 600, 400, 9);
+
+			bmp = gcnew Bitmap("Goku.png");
+			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
 		}
 
 	protected:
@@ -123,12 +130,19 @@ namespace SpriteGoku {
 		jugador->mover(buffer, bmp);
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
 
-		jugador->dibujar(buffer, bmp, invulnerable);
+		jugador->dibujar(buffer, escudoActivo ? bmpEscudo : bmp, invulnerable);
 
 		// Procesar colisión con aliados
 		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
 			if (a->estaVisible() && a->colisionaCon(jugador->obtenerRectangulo())) {
-				a->aplicarEfecto(vidas); // Aplica el efecto (ej: +1 vida)
+				a->aplicarEfecto(vidas);
+
+				// Activar escudo si el aliado es de tipo escudo
+				if (dynamic_cast<CAliadoEscudo^>(a) != nullptr) {
+					relojEscudo->Restart();
+					escudoActivo = true;
+					invulnerable = true;
+				}
 			}
 		}
 
@@ -136,6 +150,11 @@ namespace SpriteGoku {
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);
 		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, brocha, 10, 35);
+		if (escudoActivo) {
+			int tiempoRestante = duracionEscudo - (relojEscudo->ElapsedMilliseconds / 1000);
+			buffer->Graphics->DrawString("ESCUDO: " + tiempoRestante.ToString() + "s", fuente, Brushes::LightBlue, 10, 60);
+		}
+
 
 		static int segundosPasados = 0;
 		int totalSegundos = relojTiempo->ElapsedMilliseconds / 1000;
@@ -150,16 +169,22 @@ namespace SpriteGoku {
 			timer1->Enabled = false;
 		}
 
-		if (!invulnerable && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {
+		if (!invulnerable && !escudoActivo && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {
 			vidas--;
 			invulnerable = true;
 			tiempoInvulnerabilidad = 20;
 		}
 
-		if (invulnerable) {
+		if (invulnerable && !escudoActivo) {
 			tiempoInvulnerabilidad--;
 			if (tiempoInvulnerabilidad <= 0) {
 				invulnerable = false;
+			}
+		}
+
+		if (escudoActivo) {
+			if (relojEscudo->ElapsedMilliseconds >= duracionEscudo * 1000) {
+				escudoActivo = false;
 			}
 		}
 

@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAliado.h" />
+    <ClInclude Include="CAliadoEscudo.h" />
     <ClInclude Include="CAliadoVida.h" />
     <ClInclude Include="CEnemigo.h" />
     <ClInclude Include="CEnemigoPatrullaSI.h" />

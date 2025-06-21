@@ -6,6 +6,7 @@
 #include "CEnemigoPerseguidor.h"
 #include "CAliado.h"
 #include "CAliadoVida.h"
+#include "CAliadoEscudo.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -30,6 +31,8 @@ public:
 		if (rutaFondo->Contains("Mundo1") || rutaFondo->Contains("Mundo2")) {
 			CAliado^ aliado1 = gcnew CAliadoVida("Sakura.png", 350, 0);
 			aliados->Add(aliado1);
+			CAliado^ aliado2 = gcnew CAliadoEscudo("Vegeta.png", 30, 300);
+			aliados->Add(aliado2);
 		}
 	}
 
