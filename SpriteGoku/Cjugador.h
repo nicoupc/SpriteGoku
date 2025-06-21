@@ -13,6 +13,7 @@ class CJugador
 	int ancho, alto;
 	int indiceX, indiceY;
 	Direcciones ultimaTecla;
+	int tiempoInvulnerabilidad = 0;
 
 public:
 	CJugador();
@@ -34,18 +35,27 @@ public:
 		ultimaTecla = Abajo;
 	}
 
-	void dibujar(BufferedGraphics^ buffer, Bitmap^ bmp)
-	{
-		// Dibujar el sprite del jugador en la posición actual
+	void dibujar(BufferedGraphics^ buffer, Bitmap^ bmp, bool invulnerable) {
 		Rectangle posicion = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle aumentoPersonaje = Rectangle(x, y, ancho * 2, alto * 2);
-		buffer->Graphics->DrawImage(bmp, aumentoPersonaje, posicion, GraphicsUnit::Pixel);
-		buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
 
+		// Si no está invulnerable o toca renderizar (parpadeo), dibujar al jugador
+		if (!invulnerable || (invulnerable && tiempoInvulnerabilidad % 10 < 5)) {
+			buffer->Graphics->DrawImage(bmp, aumentoPersonaje, posicion, GraphicsUnit::Pixel);
+		}
+
+
+		// Dibuja el cuadrado rojo si querés seguir visualizando colisión
+		buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
 
 		x += dx;
 		y += dy;
 	}
+
+	void setTiempoInvulnerabilidad(int valor) {
+		tiempoInvulnerabilidad = valor;
+	}
+
 
 	int obtenerX() { return x; }
 	int obtenerY() { return y; }
@@ -144,7 +154,6 @@ public:
 			dx = 0;
 			break;
 		}
-		dibujar(buffer, bmp);
 
 		// Limitar el movimiento del jugador a los bordes arriba y abajo de la pantalla
 		if (y < 0) y = 0; // Limite superior

@@ -121,6 +121,9 @@ namespace SpriteGoku {
 		buffer->Graphics->Clear(Color::White);
 		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
 		jugador->mover(buffer, bmp);
+		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
+
+		jugador->dibujar(buffer, bmp, invulnerable);
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);
@@ -142,7 +145,7 @@ namespace SpriteGoku {
 		if (!invulnerable && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {
 			vidas--;
 			invulnerable = true;
-			tiempoInvulnerabilidad = 20; // 2 segundos si usás 60 FPS
+			tiempoInvulnerabilidad = 20;
 		}
 
 		if (invulnerable) {
