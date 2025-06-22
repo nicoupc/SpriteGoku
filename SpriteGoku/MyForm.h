@@ -43,6 +43,8 @@ namespace SpriteGoku {
 		Stopwatch^ relojVelocidad = gcnew Stopwatch();
 		Dictionary<TipoRecursoTecnologico, int>^ inventarioTecnologico = gcnew Dictionary<TipoRecursoTecnologico, int>();
 		Dictionary<TipoRecursoTecnologico, Bitmap^>^ iconosTecnologicos = gcnew Dictionary<TipoRecursoTecnologico, Bitmap^>();
+		Dictionary<TipoHabilidadHumana, int>^ inventarioHumano = gcnew Dictionary<TipoHabilidadHumana, int>();
+		Dictionary<TipoHabilidadHumana, Bitmap^>^ iconosHumanos = gcnew Dictionary<TipoHabilidadHumana, Bitmap^>();
 
 	public:
 		MyForm(void)
@@ -71,8 +73,8 @@ namespace SpriteGoku {
 			mundos[0]->agregarPerseguidor("Night.png", 450, 600, 8);
 
 			bmp = gcnew Bitmap("Goku.png");
-			//bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
-			bmpEscudo = gcnew Bitmap("Barril.png");
+			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
+			//bmpEscudo = gcnew Bitmap("Barril.png");
 
 			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid))
 				inventarioTecnologico[tipo] = 0;
@@ -81,6 +83,14 @@ namespace SpriteGoku {
 			iconosTecnologicos[TipoRecursoTecnologico::InteligenciaArtificial] = gcnew Bitmap("IA.png");
 			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
 			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
+
+			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid))
+				inventarioHumano[tipo] = 0;
+
+			iconosHumanos[TipoHabilidadHumana::Empatia] = gcnew Bitmap("Empatia.png");
+			iconosHumanos[TipoHabilidadHumana::Etica] = gcnew Bitmap("Etica.png");
+			iconosHumanos[TipoHabilidadHumana::Creatividad] = gcnew Bitmap("Creatividad.png");
+			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("Equipo.png");
 		}
 
 	protected:
@@ -181,6 +191,15 @@ namespace SpriteGoku {
 			}
 		}
 
+		// Procesar colisión con habilidades humanas
+		for each (CRecursoHumano ^ habilidad in mundos[mundoActual]->recursosHumanos) {
+			if (habilidad->estaVisible() && habilidad->colisionaCon(jugador->obtenerRectangulo())) {
+				habilidad->desaparecer();
+				TipoHabilidadHumana tipo = habilidad->obtenerTipo();
+				inventarioHumano[tipo]++;
+			}
+		}
+
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);
@@ -210,6 +229,22 @@ namespace SpriteGoku {
 			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD + sizeIcono, yHUD);
 
 			yHUD += sizeIcono + 8; // Espacio entre ítems
+		}
+
+		int xHUD_H = 10; // margen izquierdo
+		int sizeIcono_H = 25;
+		int yHUD_H = this->ClientSize.Height - (sizeIcono_H + 8) * iconosHumanos->Count - 10;
+
+		for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+			Bitmap^ icono = iconosHumanos[tipo];
+			int cantidad = inventarioHumano[tipo];
+
+			buffer->Graphics->DrawImage(icono, xHUD_H, yHUD_H, sizeIcono_H, sizeIcono_H);
+
+			String^ texto = "×" + cantidad.ToString();
+			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD_H + sizeIcono_H, yHUD_H);
+
+			yHUD_H += sizeIcono_H + 8;
 		}
 
 		static int segundosPasados = 0;

@@ -9,6 +9,7 @@
 #include "CAliadoEscudo.h"
 #include "CAliadoVelocidad.h"
 #include "CRecursoTecnologico.h"
+#include "CRecursoHumano.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -23,6 +24,7 @@ protected:
 public:
 	List<CAliado^>^ aliados;
 	List<CRecursoTecnologico^>^ recursosTecnologicos;
+	List<CRecursoHumano^>^ recursosHumanos;
 
 public:
 	CMundo(String^ rutaFondo) {
@@ -57,6 +59,18 @@ public:
 			recursosTecnologicos->Add(recurso4);
 		}
 
+		recursosHumanos = gcnew List<CRecursoHumano^>();
+
+		if (rutaFondo->Contains("Mundo2")) {
+			CRecursoHumano^ recurso1 = gcnew CRecursoHumano("Empatia.png", 100, 100, TipoHabilidadHumana::Empatia);
+			recursosHumanos->Add(recurso1);
+			CRecursoHumano^ recurso2 = gcnew CRecursoHumano("Etica.png", 200, 200, TipoHabilidadHumana::Etica);
+			recursosHumanos->Add(recurso2);
+			CRecursoHumano^ recurso3 = gcnew CRecursoHumano("Creatividad.png", 300, 300, TipoHabilidadHumana::Creatividad);
+			recursosHumanos->Add(recurso3);
+			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("Equipo.png", 400, 400, TipoHabilidadHumana::TrabajoEnEquipo);
+			recursosHumanos->Add(recurso4);
+		}
 	}
 
 	void dibujar(Graphics^ g, int ancho, int alto) {
@@ -77,6 +91,10 @@ public:
 		}
 
 		for each (CRecursoTecnologico ^ r in recursosTecnologicos) {
+			r->dibujar(g);
+		}
+
+		for each (CRecursoHumano ^ r in recursosHumanos) {
 			r->dibujar(g);
 		}
 	}

@@ -136,6 +136,7 @@
     <ClInclude Include="Cjugador.h" />
     <ClInclude Include="CMundo.h" />
     <ClInclude Include="CRecurso.h" />
+    <ClInclude Include="CRecursoHumano.h" />
     <ClInclude Include="CRecursoTecnologico.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
