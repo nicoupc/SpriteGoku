@@ -264,7 +264,6 @@ namespace SpriteGoku {
 			}
 		}
 
-		// Verificar interacción con espacios de construcción
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);

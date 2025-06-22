@@ -77,20 +77,27 @@ public:
 		plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
 
 		if (rutaFondo->Contains("Mundo3")) {
-			// Crear plataforma base
+			plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
+
 			CPlataformaConstruccion^ plataforma = gcnew CPlataformaConstruccion(
 				300, 470, "Platform.png", "Robot.png"
 			);
 
-			// Crear espacios debajo — separados horizontalmente
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				300, 550, TipoDeRecurso::Robotica, "RecuadroVacio.png", "RecuadroLleno.png"));
+			// Coordenadas iniciales centradas para 5 cuadros de 32px + espaciado
+			int inicioX = 260;  // podés ajustar este valor horizontal
+			int yEspacios = 550;
+			int separacion = 40;
 
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				340, 550, TipoDeRecurso::InteligenciaArtificial, "RecuadroVacio.png", "RecuadroLleno.png"));
-
+				inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "RecuadroVacio.png", "RecuadroLleno.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				380, 550, TipoDeRecurso::Empatia, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "RecuadroVacio.png", "RecuadroLleno.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "RecuadroVacio.png", "RecuadroLleno.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				inicioX + 3 * separacion, yEspacios, TipoDeRecurso::Empatia, "RecuadroVacio.png", "RecuadroLleno.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "RecuadroVacio.png", "RecuadroLleno.png"));
 
 			plataformasConstruccion->Add(plataforma);
 		}
