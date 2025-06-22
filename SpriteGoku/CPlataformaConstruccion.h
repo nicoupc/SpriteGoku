@@ -5,68 +5,87 @@ using namespace System::Collections::Generic;
 
 ref class CPlataformaConstruccion {
 private:
-    int x, y;
-    Bitmap^ imagenPlataforma;
-    Bitmap^ imagenConstruida;
-    List<CEspacioConstruible^>^ espacios;
-    bool construida;
+	int x, y;
+	Bitmap^ imagenPlataforma;
+	Bitmap^ imagenConstruida;
+	List<CEspacioConstruible^>^ espacios;
+	bool construida;
+	int alphaConstruccion; // transparencia inicial
 
 public:
-    CPlataformaConstruccion(int px, int py, String^ rutaPlataforma, String^ rutaConstruida) {
-        x = px;
-        y = py;
-        imagenPlataforma = gcnew Bitmap(rutaPlataforma);
-        imagenConstruida = gcnew Bitmap(rutaConstruida);
-        espacios = gcnew List<CEspacioConstruible^>();
-        construida = false;
-    }
+	CPlataformaConstruccion(int px, int py, String^ rutaPlataforma, String^ rutaConstruida) {
+		x = px;
+		y = py;
+		imagenPlataforma = gcnew Bitmap(rutaPlataforma);
+		imagenConstruida = gcnew Bitmap(rutaConstruida);
+		espacios = gcnew List<CEspacioConstruible^>();
+		construida = false;
+		alphaConstruccion = 0;
+	}
 
-    void agregarEspacio(CEspacioConstruible^ espacio) {
-        espacios->Add(espacio);
-    }
+	void agregarEspacio(CEspacioConstruible^ espacio) {
+		espacios->Add(espacio);
+	}
 
-    void dibujar(Graphics^ g) {
-        // Dibujar espacios primero (debajo de la plataforma)
-        for each (CEspacioConstruible ^ espacio in espacios) {
-            espacio->dibujar(g);
-        }
+	void dibujar(Graphics^ g) {
+		// Dibujar espacios primero (debajo de la plataforma)
+		for each(CEspacioConstruible ^ espacio in espacios) {
+			espacio->dibujar(g);
+		}
 
-        // Dibujar la plataforma
-        g->DrawImage(imagenPlataforma, x, y);
+		// Dibujar la plataforma
+		g->DrawImage(imagenPlataforma, x, y);
 
-        // Dibujar la construcción final solo si está completa
-        if (construida) {
-            int anchoObjeto = 80;
-            int altoObjeto = 80;
+		// Dibujar la construcción final solo si está completa
+		if (construida) {
 
-            // Centrar horizontalmente encima de la plataforma
-            //int cx = x + (imagenPlataforma->Width - anchoObjeto) / 2;
-            int cx = x;
-            //int cy = y - altoObjeto + 10; // Ajuste vertical opcional
-            int cy = y;
+			// Incrementar alpha para hacerla visible gradualmente
+			if (alphaConstruccion < 255) {
+				alphaConstruccion += 10; // velocidad del fade-in
+			}
 
-            Rectangle destino(cx, cy, anchoObjeto, altoObjeto);
-            g->DrawImage(imagenConstruida, destino);
-        }
-    }
+			int anchoObjeto = 100;
+			int altoObjeto = 100;
 
-    void verificarConstruccion() {
-        for each (CEspacioConstruible ^ espacio in espacios) {
-            if (!espacio->estaLleno())
-                return;
-        }
-        construida = true;
-    }
+			// Centrar horizontalmente encima de la plataforma
+			//int cx = x + (imagenPlataforma->Width - anchoObjeto) / 2;
+			int cx = x + 15;
+			//int cy = y - altoObjeto + 10; // Ajuste vertical opcional
+			int cy = y - 20;
 
-    List<CEspacioConstruible^>^ obtenerEspacios() {
-        return espacios;
-    }
+			Rectangle destino(cx, cy, anchoObjeto, altoObjeto);
 
-    bool estaConstruida() {
-        return construida;
-    }
+			// Crear transparencia
+			System::Drawing::Imaging::ColorMatrix^ cm = gcnew System::Drawing::Imaging::ColorMatrix();
+			cm->Matrix33 = alphaConstruccion / 255.0f;
 
-    Rectangle obtenerZonaConstruida() {
-        return Rectangle(x + 10, y - 60, 50, 50); // para colisiones futuras, opcional
-    }
+			System::Drawing::Imaging::ImageAttributes^ ia = gcnew System::Drawing::Imaging::ImageAttributes();
+			ia->SetColorMatrix(cm, System::Drawing::Imaging::ColorMatrixFlag::Default, System::Drawing::Imaging::ColorAdjustType::Bitmap);
+
+			g->DrawImage(imagenConstruida, destino, 0, 0, imagenConstruida->Width, imagenConstruida->Height, GraphicsUnit::Pixel, ia);
+		}
+	}
+
+	void verificarConstruccion() {
+		for each(CEspacioConstruible ^ espacio in espacios)
+			if (!espacio->estaLleno())
+				return;
+
+		if (!construida) {
+			construida = true;
+			alphaConstruccion = 0; // inicia desde transparente
+		}
+	}
+
+	List<CEspacioConstruible^>^ obtenerEspacios() {
+		return espacios;
+	}
+
+	bool estaConstruida() {
+		return construida;
+	}
+
+	Rectangle obtenerZonaConstruida() {
+		return Rectangle(x + 10, y - 60, 50, 50); // para colisiones futuras, opcional
+	}
 };
