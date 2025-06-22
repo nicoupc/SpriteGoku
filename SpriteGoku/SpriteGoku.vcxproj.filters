@@ -53,5 +53,11 @@
     <ClInclude Include="CAliadoVelocidad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CRecurso.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRecursoTecnologico.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

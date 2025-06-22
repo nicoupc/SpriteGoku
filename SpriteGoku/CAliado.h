@@ -34,7 +34,7 @@ public:
         g->DrawImage(sprite, destino, origen, GraphicsUnit::Pixel);
 
         // Para depurar colisión
-        g->DrawRectangle(gcnew Pen(Color::Red), obtenerRectangulo());
+        //g->DrawRectangle(gcnew Pen(Color::Red), obtenerRectangulo());
     }
 
     virtual Rectangle obtenerRectangulo() {

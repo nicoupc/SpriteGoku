@@ -4,6 +4,8 @@
 #include "CMundo.h"
 #include "CEnemigo.h"
 
+const int ALTURA_HUD = 60;
+
 namespace SpriteGoku {
 
 	using namespace System;
@@ -28,7 +30,7 @@ namespace SpriteGoku {
 		int tiempoRestante = 120;              // Tiempo en segundos
 		int vidas = 3;                         // Cantidad inicial de vidas
 		int framesAcumulados = 0;             // Para contar tiempo usando los ticks del timer
-		System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 18, FontStyle::Bold);
+		System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 19, FontStyle::Bold);
 		Brush^ brocha = Brushes::White;
 		Stopwatch^ relojTiempo = gcnew Stopwatch();
 		bool invulnerable = false;
@@ -39,6 +41,8 @@ namespace SpriteGoku {
 		bool velocidadActiva = false;
 		int duracionVelocidad = 5; // segundos
 		Stopwatch^ relojVelocidad = gcnew Stopwatch();
+		Dictionary<TipoRecursoTecnologico, int>^ inventarioTecnologico = gcnew Dictionary<TipoRecursoTecnologico, int>();
+		Dictionary<TipoRecursoTecnologico, Bitmap^>^ iconosTecnologicos = gcnew Dictionary<TipoRecursoTecnologico, Bitmap^>();
 
 	public:
 		MyForm(void)
@@ -60,14 +64,23 @@ namespace SpriteGoku {
 			int spriteAncho = 32;
 			int recorrido = 90;
 			int xInicio = 790 - spriteAncho - recorrido;
-			mundos[1]->agregarPatrullaSD("Boo.png", xInicio, 0, 15, 22, 12);
+			mundos[1]->agregarPatrullaSD("Majinbuu.png", xInicio, 0, 15, 22, 12);
 			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 22, 12);
 
-			mundos[1]->agregarPerseguidor("Wolf.png", 450, 600, 9);
-			mundos[0]->agregarPerseguidor("Night.png", 450, 600, 9);
+			mundos[1]->agregarPerseguidor("Wolf.png", 450, 600, 8);
+			mundos[0]->agregarPerseguidor("Night.png", 450, 600, 8);
 
 			bmp = gcnew Bitmap("Goku.png");
-			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
+			//bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
+			bmpEscudo = gcnew Bitmap("Barril.png");
+
+			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid))
+				inventarioTecnologico[tipo] = 0;
+
+			iconosTecnologicos[TipoRecursoTecnologico::Robotica] = gcnew Bitmap("Robotica.png");
+			iconosTecnologicos[TipoRecursoTecnologico::InteligenciaArtificial] = gcnew Bitmap("IA.png");
+			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
+			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
 		}
 
 	protected:
@@ -111,7 +124,7 @@ namespace SpriteGoku {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1300, 900);
+			this->ClientSize = System::Drawing::Size(1400, 1000);
 			this->MaximizeBox = false;
 			this->MinimizeBox = false;
 			this->Name = L"MyForm";
@@ -130,6 +143,7 @@ namespace SpriteGoku {
 
 		buffer->Graphics->Clear(Color::White);
 		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
+
 		jugador->mover(buffer, bmp);
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
 
@@ -156,17 +170,46 @@ namespace SpriteGoku {
 			}
 		}
 
+		// Procesar colisión con recursos tecnológicos
+		for each (CRecursoTecnologico ^ recurso in mundos[mundoActual]->recursosTecnologicos) {
+			if (recurso->estaVisible() && recurso->colisionaCon(jugador->obtenerRectangulo())) {
+				recurso->desaparecer();
+				TipoRecursoTecnologico tipo = recurso->obtenerTipo();
+				inventarioTecnologico[tipo]++;
+
+				// (Opcional) Podés mostrar un mensaje temporal aquí si querés
+			}
+		}
+
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
-		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 10, 10);
-		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, Brushes::OrangeRed, 10, 35);
+		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);
+		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, Brushes::Red, 5, 30);
 		if (escudoActivo) {
 			int tiempoRestante = duracionEscudo - (relojEscudo->ElapsedMilliseconds / 1000);
-			buffer->Graphics->DrawString("ESCUDO: " + tiempoRestante.ToString() + "s", fuente, Brushes::LightBlue, 10, 60);
+			buffer->Graphics->DrawString("ESCUDO: " + tiempoRestante.ToString() + "s", fuente, Brushes::LightBlue, 200, 5);
 		}
 		if (velocidadActiva) {
 			int tiempoRestVel = duracionVelocidad - (relojVelocidad->ElapsedMilliseconds / 1000);
-			buffer->Graphics->DrawString("VELOCIDAD: " + tiempoRestVel.ToString() + "s", fuente, Brushes::GreenYellow, 10, 85);
+			buffer->Graphics->DrawString("VELOCIDAD: " + tiempoRestVel.ToString() + "s", fuente, Brushes::GreenYellow, 200, 30);
+		}
+
+		int xHUD = this->ClientSize.Width - 70; // margen derecho
+		int yHUD = 10;
+		int sizeIcono = 25;
+
+		for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+			Bitmap^ icono = iconosTecnologicos[tipo];
+			int cantidad = inventarioTecnologico[tipo];
+
+			// Dibujar ícono más pequeño
+			buffer->Graphics->DrawImage(icono, xHUD, yHUD, sizeIcono, sizeIcono);
+
+			// Dibujar texto alineado con el ícono
+			String^ texto = "×" + cantidad.ToString();
+			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD + sizeIcono, yHUD);
+
+			yHUD += sizeIcono + 8; // Espacio entre ítems
 		}
 
 		static int segundosPasados = 0;

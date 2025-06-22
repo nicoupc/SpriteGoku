@@ -8,6 +8,7 @@
 #include "CAliadoVida.h"
 #include "CAliadoEscudo.h"
 #include "CAliadoVelocidad.h"
+#include "CRecursoTecnologico.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -18,8 +19,10 @@ protected:
 	Bitmap^ fondo;
 	List<CEnemigo^>^ enemigos;
 	CEnemigoPerseguidor^ perseguidor;
-	
-public: List<CAliado^>^ aliados;
+
+public:
+	List<CAliado^>^ aliados;
+	List<CRecursoTecnologico^>^ recursosTecnologicos;
 
 public:
 	CMundo(String^ rutaFondo) {
@@ -30,13 +33,30 @@ public:
 
 		// Solo crear aliados en mundo 0 y 1
 		if (rutaFondo->Contains("Mundo1") || rutaFondo->Contains("Mundo2")) {
-			CAliado^ aliado1 = gcnew CAliadoVida("Sakura.png", 350, 0);
+			CAliado^ aliado1 = gcnew CAliadoVida("Sakura.png", 350, 60);
 			aliados->Add(aliado1);
 			CAliado^ aliado2 = gcnew CAliadoEscudo("Vegeta.png", 30, 300);
 			aliados->Add(aliado2);
 			CAliado^ aliado3 = gcnew CAliadoVelocidad("Sangohan.png", 830, 300);
 			aliados->Add(aliado3);
 		}
+
+		recursosTecnologicos = gcnew List<CRecursoTecnologico^>();
+
+		if (rutaFondo->Contains("Mundo1")) {
+			CRecursoTecnologico^ recurso1 = gcnew CRecursoTecnologico("Robotica.png", 0, 0, TipoRecursoTecnologico::Robotica);
+			recursosTecnologicos->Add(recurso1);
+
+			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("IA.png", 800, 0, TipoRecursoTecnologico::InteligenciaArtificial);
+			recursosTecnologicos->Add(recurso2);
+
+			CRecursoTecnologico^ recurso3 = gcnew CRecursoTecnologico("BigData.png", 300, 240, TipoRecursoTecnologico::BigData);
+			recursosTecnologicos->Add(recurso3);
+
+			CRecursoTecnologico^ recurso4 = gcnew CRecursoTecnologico("Panel.png", 600, 0, TipoRecursoTecnologico::EnergiaSostenible);
+			recursosTecnologicos->Add(recurso4);
+		}
+
 	}
 
 	void dibujar(Graphics^ g, int ancho, int alto) {
@@ -54,6 +74,10 @@ public:
 		for each (CAliado ^ a in aliados) {
 			a->mover();
 			a->dibujar(g);
+		}
+
+		for each (CRecursoTecnologico ^ r in recursosTecnologicos) {
+			r->dibujar(g);
 		}
 	}
 
