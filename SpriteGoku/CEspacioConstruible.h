@@ -21,25 +21,29 @@ private:
     int alto = 32;
     bool lleno;
     TipoDeRecurso tipo;
-    Bitmap^ imagen;
-    Bitmap^ imagenRellena;
+    Bitmap^ imagenGris;
+    Bitmap^ imagenColor;
 
 public:
     // Constructor: recibe la imagen vacía y el tipo de recurso que requiere
-    CEspacioConstruible(int px, int py, TipoDeRecurso tipo, String^ rutaImagenVacia, String^ rutaImagenRellena) {
+    CEspacioConstruible(int px, int py, TipoDeRecurso tipo, String^ rutaGris, String^ rutaColor) {
         x = px;
         y = py;
         this->tipo = tipo;
         lleno = false;
-        imagen = gcnew Bitmap(rutaImagenVacia);
-        imagenRellena = gcnew Bitmap(rutaImagenRellena);
+        imagenGris = gcnew Bitmap(rutaGris);
+        imagenColor = gcnew Bitmap(rutaColor);
     }
 
     void dibujar(Graphics^ g) {
         Rectangle destino = Rectangle(x, y, ancho, alto);
-        Bitmap^ mostrar = lleno ? imagenRellena : imagen;
+
+        // Elegir imagen y borde según el estado
+        Bitmap^ mostrar = lleno ? imagenColor : imagenGris;
+        Pen^ borde = lleno ? gcnew Pen(Color::Yellow, 2.0f) : gcnew Pen(Color::Black, 2.0f);
+
         g->DrawImage(mostrar, destino);
-		g->DrawRectangle(Pens::Red, destino); // dibujar borde para visibilidad
+        g->DrawRectangle(borde, destino);
     }
 
     Rectangle obtenerRect() {

@@ -89,15 +89,15 @@ public:
 			int separacion = 40;
 
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "Robotica_Gris.png", "Robotica.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "IA_Gris.png", "IA.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 3 * separacion, yEspacios, TipoDeRecurso::Empatia, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 3 * separacion, yEspacios, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "RecuadroVacio.png", "RecuadroLleno.png"));
+				inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
 
 			plataformasConstruccion->Add(plataforma);
 		}
