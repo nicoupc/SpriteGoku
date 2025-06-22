@@ -213,37 +213,33 @@ namespace SpriteGoku {
 			buffer->Graphics->DrawString("VELOCIDAD: " + tiempoRestVel.ToString() + "s", fuente, Brushes::GreenYellow, 200, 30);
 		}
 
-		int xHUD = this->ClientSize.Width - 70; // margen derecho
-		int yHUD = 10;
+		// RECURSOS TECNOLÓGICOS — ahora abajo a la izquierda
+		int xHUD = 10;
 		int sizeIcono = 25;
+		int yHUD = this->ClientSize.Height - (sizeIcono + 8) * iconosTecnologicos->Count - 10;
 
-		for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+		for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 			Bitmap^ icono = iconosTecnologicos[tipo];
 			int cantidad = inventarioTecnologico[tipo];
 
-			// Dibujar ícono más pequeño
 			buffer->Graphics->DrawImage(icono, xHUD, yHUD, sizeIcono, sizeIcono);
-
-			// Dibujar texto alineado con el ícono
 			String^ texto = "×" + cantidad.ToString();
 			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD + sizeIcono, yHUD);
-
-			yHUD += sizeIcono + 8; // Espacio entre ítems
+			yHUD += sizeIcono + 8;
 		}
 
-		int xHUD_H = 10; // margen izquierdo
+		// HABILIDADES HUMANAS — ahora arriba a la derecha
+		int xHUD_H = this->ClientSize.Width - 70;
+		int yHUD_H = 10;
 		int sizeIcono_H = 25;
-		int yHUD_H = this->ClientSize.Height - (sizeIcono_H + 8) * iconosHumanos->Count - 10;
 
 		for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 			Bitmap^ icono = iconosHumanos[tipo];
 			int cantidad = inventarioHumano[tipo];
 
 			buffer->Graphics->DrawImage(icono, xHUD_H, yHUD_H, sizeIcono_H, sizeIcono_H);
-
 			String^ texto = "×" + cantidad.ToString();
 			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD_H + sizeIcono_H, yHUD_H);
-
 			yHUD_H += sizeIcono_H + 8;
 		}
 
