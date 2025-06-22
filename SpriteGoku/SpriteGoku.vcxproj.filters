@@ -62,5 +62,11 @@
     <ClInclude Include="CRecursoHumano.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CEspacioConstruible.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlataformaConstruccion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "CJugador.h"
 #include "CMundo.h"
 #include "CEnemigo.h"
+#include "CPlataformaConstruccion.h"
 
 const int ALTURA_HUD = 60;
 
@@ -76,22 +77,47 @@ namespace SpriteGoku {
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
 			//bmpEscudo = gcnew Bitmap("Barril.png");
 
-			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid))
+			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				inventarioTecnologico[tipo] = 0;
+			}
 
 			iconosTecnologicos[TipoRecursoTecnologico::Robotica] = gcnew Bitmap("Robotica.png");
 			iconosTecnologicos[TipoRecursoTecnologico::InteligenciaArtificial] = gcnew Bitmap("IA.png");
 			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
 			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
 
-			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid))
+			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 				inventarioHumano[tipo] = 0;
+			}
 
 			iconosHumanos[TipoHabilidadHumana::Empatia] = gcnew Bitmap("Empatia.png");
 			iconosHumanos[TipoHabilidadHumana::Etica] = gcnew Bitmap("Etica.png");
 			iconosHumanos[TipoHabilidadHumana::Creatividad] = gcnew Bitmap("Creatividad.png");
 			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("Equipo.png");
 		}
+
+		TipoHabilidadHumana convertirAHabilidadHumana(TipoDeRecurso tipo) {
+			switch (tipo) {
+			case TipoDeRecurso::Empatia: return TipoHabilidadHumana::Empatia;
+			case TipoDeRecurso::Etica: return TipoHabilidadHumana::Etica;
+			case TipoDeRecurso::Creatividad: return TipoHabilidadHumana::Creatividad;
+			case TipoDeRecurso::TrabajoEnEquipo: return TipoHabilidadHumana::TrabajoEnEquipo;
+			default:
+				throw gcnew Exception("TipoDeRecurso no corresponde a una habilidad humana.");
+			}
+		}
+
+		TipoRecursoTecnologico convertirATecnologico(TipoDeRecurso tipo) {
+			switch (tipo) {
+			case TipoDeRecurso::Robotica: return TipoRecursoTecnologico::Robotica;
+			case TipoDeRecurso::InteligenciaArtificial: return TipoRecursoTecnologico::InteligenciaArtificial;
+			case TipoDeRecurso::BigData: return TipoRecursoTecnologico::BigData;
+			case TipoDeRecurso::EnergiaSostenible: return TipoRecursoTecnologico::EnergiaSostenible;
+			default:
+				throw gcnew Exception("TipoDeRecurso no corresponde a un recurso tecnológico.");
+			}
+		}
+
 
 	protected:
 		/// <summary>
@@ -200,6 +226,45 @@ namespace SpriteGoku {
 			}
 		}
 
+		if (mundos[mundoActual]->plataformasConstruccion != nullptr) {
+			for each (CPlataformaConstruccion ^ plataforma in mundos[mundoActual]->plataformasConstruccion) {
+				for each (CEspacioConstruible ^ espacio in plataforma->obtenerEspacios()) {
+					if (!espacio->estaLleno() && espacio->obtenerRect().IntersectsWith(jugador->obtenerRectangulo())) {
+
+						// Tipo de recurso que este espacio requiere
+						TipoDeRecurso tipoReq = espacio->obtenerTipo();
+
+						bool disponible = false;
+
+						// Verificar si es recurso tecnológico o humano
+						if ((int)tipoReq <= (int)TipoDeRecurso::EnergiaSostenible) {
+							// Es tecnológico
+							TipoRecursoTecnologico t = convertirATecnologico(tipoReq);
+
+							if (inventarioTecnologico->ContainsKey(t) && inventarioTecnologico[t] > 0) {
+								inventarioTecnologico[t]--;
+								espacio->rellenar();
+								plataforma->verificarConstruccion();
+								disponible = true; // Recurso tecnológico usado
+							}
+						}
+						else {
+							// Es humano
+							TipoHabilidadHumana h = convertirAHabilidadHumana(tipoReq);
+
+							if (inventarioHumano->ContainsKey(h) && inventarioHumano[h] > 0) {
+								inventarioHumano[h]--;
+								espacio->rellenar();
+								plataforma->verificarConstruccion();
+								disponible = true; // Recurso humano usado
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Verificar interacción con espacios de construcción
 		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);

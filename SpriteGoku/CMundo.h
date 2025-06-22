@@ -10,6 +10,7 @@
 #include "CAliadoVelocidad.h"
 #include "CRecursoTecnologico.h"
 #include "CRecursoHumano.h"
+#include "CPlataformaConstruccion.h"
 
 using namespace System;
 using namespace System::Drawing;
@@ -25,6 +26,7 @@ public:
 	List<CAliado^>^ aliados;
 	List<CRecursoTecnologico^>^ recursosTecnologicos;
 	List<CRecursoHumano^>^ recursosHumanos;
+	List<CPlataformaConstruccion^>^ plataformasConstruccion;
 
 public:
 	CMundo(String^ rutaFondo) {
@@ -71,6 +73,27 @@ public:
 			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("Equipo.png", 400, 400, TipoHabilidadHumana::TrabajoEnEquipo);
 			recursosHumanos->Add(recurso4);
 		}
+
+		plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
+
+		if (rutaFondo->Contains("Mundo3")) {
+			// Crear plataforma base
+			CPlataformaConstruccion^ plataforma = gcnew CPlataformaConstruccion(
+				300, 470, "Platform.png", "Robot.png"
+			);
+
+			// Crear espacios debajo — separados horizontalmente
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				300, 550, TipoDeRecurso::Robotica, "RecuadroVacio.png", "RecuadroLleno.png"));
+
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				340, 550, TipoDeRecurso::InteligenciaArtificial, "RecuadroVacio.png", "RecuadroLleno.png"));
+
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(
+				380, 550, TipoDeRecurso::Empatia, "RecuadroVacio.png", "RecuadroLleno.png"));
+
+			plataformasConstruccion->Add(plataforma);
+		}
 	}
 
 	void dibujar(Graphics^ g, int ancho, int alto) {
@@ -96,6 +119,11 @@ public:
 
 		for each (CRecursoHumano ^ r in recursosHumanos) {
 			r->dibujar(g);
+		}
+
+		if (plataformasConstruccion != nullptr) {
+			for each (CPlataformaConstruccion ^ p in plataformasConstruccion)
+				p->dibujar(g);
 		}
 	}
 
