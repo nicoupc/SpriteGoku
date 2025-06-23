@@ -126,10 +126,26 @@ public:
 			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 1 * separacion3, yEspacios3, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
 			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 2 * separacion3, yEspacios3, TipoDeRecurso::EnergiaSostenible, "Panel_Gris.png", "Panel.png"));
 			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 3 * separacion3, yEspacios3, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
-			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 4 * separacion3, yEspacios3, TipoDeRecurso::TrabajoEnEquipo, "TrabajoEnEquipo_Gris.png", "TrabajoEnEquipo.png"));
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 4 * separacion3, yEspacios3, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
 
 			plataformasConstruccion->Add(plataforma3);
 
+			// PLATAFORMA 4 — CENTRO DE ENERGÍA HUMANO-TECNOLOGICO
+			CPlataformaConstruccion^ plataforma4 = gcnew CPlataformaConstruccion(
+				610, 100, "Platform.png", "CentroEnergia.png"
+			);
+
+			int inicioX4 = 620;
+			int yEspacios4 = 300;
+			int separacion4 = 40;
+
+			plataforma4->agregarEspacio(gcnew CEspacioConstruible(inicioX4 + 0 * separacion4, yEspacios4, TipoDeRecurso::EnergiaSostenible, "Panel_Gris.png", "Panel.png"));
+			plataforma4->agregarEspacio(gcnew CEspacioConstruible(inicioX4 + 1 * separacion4, yEspacios4, TipoDeRecurso::Robotica, "Robotica_Gris.png", "Robotica.png"));
+			plataforma4->agregarEspacio(gcnew CEspacioConstruible(inicioX4 + 2 * separacion4, yEspacios4, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
+			plataforma4->agregarEspacio(gcnew CEspacioConstruible(inicioX4 + 3 * separacion4, yEspacios4, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
+			plataforma4->agregarEspacio(gcnew CEspacioConstruible(inicioX4 + 4 * separacion4, yEspacios4, TipoDeRecurso::TrabajoEnEquipo, "TrabajoEnEquipo_Gris.png", "TrabajoEnEquipo.png"));
+
+			plataformasConstruccion->Add(plataforma4);
 		}
 	}
 
