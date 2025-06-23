@@ -46,6 +46,7 @@ namespace SpriteGoku {
 		Dictionary<TipoRecursoTecnologico, Bitmap^>^ iconosTecnologicos = gcnew Dictionary<TipoRecursoTecnologico, Bitmap^>();
 		Dictionary<TipoHabilidadHumana, int>^ inventarioHumano = gcnew Dictionary<TipoHabilidadHumana, int>();
 		Dictionary<TipoHabilidadHumana, Bitmap^>^ iconosHumanos = gcnew Dictionary<TipoHabilidadHumana, Bitmap^>();
+		int progresoConstruccion = 0;
 
 	public:
 		MyForm(void)
@@ -261,6 +262,34 @@ namespace SpriteGoku {
 						}
 					}
 				}
+
+				// REVISAR PROGRESO DE CONSTRUCCIONES
+				if (mundoActual == 2) {
+					int plataformasTotales = mundos[2]->plataformasConstruccion->Count;
+					int completadas = 0;
+
+					for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+						if (p->estaConstruida()) completadas++;
+					}
+
+					progresoConstruccion = completadas * 25;
+
+					if (progresoConstruccion >= 100) {
+						// Revisar si todas las plataformas ya fueron eliminadas visualmente
+						bool todasEliminadas = true;
+						for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+							if (!p->estaEliminada()) {
+								todasEliminadas = false;
+								break;
+							}
+						}
+
+						if (todasEliminadas) {
+							buffer->Graphics->DrawString("¡GANASTE!", fuente, Brushes::Green, 450, 350);
+							timer1->Enabled = false;
+						}
+					}
+				}
 			}
 		}
 
@@ -344,6 +373,24 @@ namespace SpriteGoku {
 				velocidadActiva = false;
 				jugador->restaurarVelocidad();
 			}
+		}
+
+		if (mundoActual == 2) {
+			int largoMax = 200;
+			int altoBarra = 20;
+			int xBarra = this->ClientSize.Width / 2 - largoMax / 2;
+			int yBarra = this->ClientSize.Height - 35;
+
+			// Marco gris
+			buffer->Graphics->FillRectangle(Brushes::Gray, xBarra, yBarra, largoMax, altoBarra);
+
+			// Avance verde
+			int largoActual = (progresoConstruccion * largoMax) / 100;
+			buffer->Graphics->FillRectangle(Brushes::LimeGreen, xBarra, yBarra, largoActual, altoBarra);
+
+			// Porcentaje al centro
+			String^ textoPorcentaje = progresoConstruccion.ToString() + "%";
+			buffer->Graphics->DrawString(textoPorcentaje, fuente, Brushes::Black, xBarra + largoMax + 10, yBarra - 2);
 		}
 
 		buffer->Render(g);

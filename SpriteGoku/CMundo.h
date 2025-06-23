@@ -50,15 +50,28 @@ public:
 		if (rutaFondo->Contains("Mundo1")) {
 			CRecursoTecnologico^ recurso1 = gcnew CRecursoTecnologico("Robotica.png", 300, 300, TipoRecursoTecnologico::Robotica);
 			recursosTecnologicos->Add(recurso1);
-
 			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("InteligenciaArtificial.png", 350, 300, TipoRecursoTecnologico::InteligenciaArtificial);
 			recursosTecnologicos->Add(recurso2);
-
 			CRecursoTecnologico^ recurso3 = gcnew CRecursoTecnologico("BigData.png", 400, 300, TipoRecursoTecnologico::BigData);
 			recursosTecnologicos->Add(recurso3);
-
 			CRecursoTecnologico^ recurso4 = gcnew CRecursoTecnologico("Panel.png", 450, 300, TipoRecursoTecnologico::EnergiaSostenible);
 			recursosTecnologicos->Add(recurso4);
+			CRecursoTecnologico^ recurso5 = gcnew CRecursoTecnologico("Robotica.png", 500, 300, TipoRecursoTecnologico::Robotica);
+			recursosTecnologicos->Add(recurso5);
+			CRecursoTecnologico^ recurso6 = gcnew CRecursoTecnologico("InteligenciaArtificial.png", 550, 300, TipoRecursoTecnologico::InteligenciaArtificial);
+			recursosTecnologicos->Add(recurso6);
+			CRecursoTecnologico^ recurso7 = gcnew CRecursoTecnologico("BigData.png", 600, 300, TipoRecursoTecnologico::BigData);
+			recursosTecnologicos->Add(recurso7);
+			CRecursoTecnologico^ recurso8 = gcnew CRecursoTecnologico("Panel.png", 650, 300, TipoRecursoTecnologico::EnergiaSostenible);
+			recursosTecnologicos->Add(recurso8);
+			CRecursoTecnologico^ recurso9 = gcnew CRecursoTecnologico("Robotica.png", 700, 300, TipoRecursoTecnologico::Robotica);
+			recursosTecnologicos->Add(recurso9);
+			CRecursoTecnologico^ recurso10 = gcnew CRecursoTecnologico("InteligenciaArtificial.png", 750, 300, TipoRecursoTecnologico::InteligenciaArtificial);
+			recursosTecnologicos->Add(recurso10);
+			CRecursoTecnologico^ recurso11 = gcnew CRecursoTecnologico("BigData.png", 800, 300, TipoRecursoTecnologico::BigData);
+			recursosTecnologicos->Add(recurso11);
+			CRecursoTecnologico^ recurso12 = gcnew CRecursoTecnologico("Panel.png", 850, 300, TipoRecursoTecnologico::EnergiaSostenible);
+			recursosTecnologicos->Add(recurso12);
 		}
 
 		recursosHumanos = gcnew List<CRecursoHumano^>();
@@ -72,6 +85,22 @@ public:
 			recursosHumanos->Add(recurso3);
 			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("TrabajoEnEquipo.png", 450, 300, TipoHabilidadHumana::TrabajoEnEquipo);
 			recursosHumanos->Add(recurso4);
+			CRecursoHumano^ recurso5 = gcnew CRecursoHumano("Empatia.png", 500, 300, TipoHabilidadHumana::Empatia);
+			recursosHumanos->Add(recurso5);
+			CRecursoHumano^ recurso6 = gcnew CRecursoHumano("Etica.png", 550, 300, TipoHabilidadHumana::Etica);
+			recursosHumanos->Add(recurso6);
+			CRecursoHumano^ recurso7 = gcnew CRecursoHumano("Creatividad.png", 600, 300, TipoHabilidadHumana::Creatividad);
+			recursosHumanos->Add(recurso7);
+			CRecursoHumano^ recurso8 = gcnew CRecursoHumano("TrabajoEnEquipo.png", 650, 300, TipoHabilidadHumana::TrabajoEnEquipo);
+			recursosHumanos->Add(recurso8);
+			CRecursoHumano^ recurso9 = gcnew CRecursoHumano("Empatia.png", 700, 300, TipoHabilidadHumana::Empatia);
+			recursosHumanos->Add(recurso9);
+			CRecursoHumano^ recurso10 = gcnew CRecursoHumano("Etica.png", 750, 300, TipoHabilidadHumana::Etica);
+			recursosHumanos->Add(recurso10);
+			CRecursoHumano^ recurso11 = gcnew CRecursoHumano("Creatividad.png", 800, 300, TipoHabilidadHumana::Creatividad);
+			recursosHumanos->Add(recurso11);
+			CRecursoHumano^ recurso12 = gcnew CRecursoHumano("TrabajoEnEquipo.png", 850, 300, TipoHabilidadHumana::TrabajoEnEquipo);
+			recursosHumanos->Add(recurso12);
 		}
 
 		plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
