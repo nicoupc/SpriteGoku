@@ -88,16 +88,11 @@ public:
 			int yEspacios = 600;
 			int separacion = 40;
 
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "Robotica_Gris.png", "Robotica.png"));
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 3 * separacion, yEspacios, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
-			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "Robotica_Gris.png", "Robotica.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(inicioX + 3 * separacion, yEspacios, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
+			plataforma->agregarEspacio(gcnew CEspacioConstruible(inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
 
 			plataformasConstruccion->Add(plataforma);
 
@@ -117,6 +112,24 @@ public:
 			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 4 * separacion2, yEspacios2, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
 
 			plataformasConstruccion->Add(plataforma2);
+
+			// PLATAFORMA 3 — CENTRO DE INVESTIGACIÓN
+			CPlataformaConstruccion^ plataforma3 = gcnew CPlataformaConstruccion(
+				250, 100, "Platform.png", "CentroInvestigacion.png"
+			);
+
+			int inicioX3 = 260;
+			int yEspacios3 = 300;
+			int separacion3 = 40;
+
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 0 * separacion3, yEspacios3, TipoDeRecurso::BigData, "BigData_Gris.png", "BigData.png"));
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 1 * separacion3, yEspacios3, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 2 * separacion3, yEspacios3, TipoDeRecurso::EnergiaSostenible, "Panel_Gris.png", "Panel.png"));
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 3 * separacion3, yEspacios3, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
+			plataforma3->agregarEspacio(gcnew CEspacioConstruible(inicioX3 + 4 * separacion3, yEspacios3, TipoDeRecurso::TrabajoEnEquipo, "TrabajoEnEquipo_Gris.png", "TrabajoEnEquipo.png"));
+
+			plataformasConstruccion->Add(plataforma3);
+
 		}
 	}
 
