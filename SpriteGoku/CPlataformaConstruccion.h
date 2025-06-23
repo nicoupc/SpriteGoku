@@ -34,7 +34,7 @@ public:
 		}
 
 		// Dibujar la plataforma
-		g->DrawImage(imagenPlataforma, x, y);
+		g->DrawImage(imagenPlataforma, x + 50, y + 100);
 
 		// Dibujar la construcción final solo si está completa
 		if (construida) {
@@ -44,14 +44,14 @@ public:
 				alphaConstruccion += 10; // velocidad del fade-in
 			}
 
-			int anchoObjeto = 100;
-			int altoObjeto = 100;
+			int anchoObjeto = 250;
+			int altoObjeto = 250;
 
 			// Centrar horizontalmente encima de la plataforma
 			//int cx = x + (imagenPlataforma->Width - anchoObjeto) / 2;
-			int cx = x + 15;
+			int cx = x - 15;
 			//int cy = y - altoObjeto + 10; // Ajuste vertical opcional
-			int cy = y - 20;
+			int cy = y - 50;
 
 			Rectangle destino(cx, cy, anchoObjeto, altoObjeto);
 

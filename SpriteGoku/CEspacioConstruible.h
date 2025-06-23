@@ -40,7 +40,7 @@ public:
 
         // Elegir imagen y borde según el estado
         Bitmap^ mostrar = lleno ? imagenColor : imagenGris;
-        Pen^ borde = lleno ? gcnew Pen(Color::Yellow, 2.0f) : gcnew Pen(Color::Black, 2.0f);
+        Pen^ borde = lleno ? gcnew Pen(Color::Yellow, 2.5f) : gcnew Pen(Color::Black, 2.5f);
 
         g->DrawImage(mostrar, destino);
         g->DrawRectangle(borde, destino);

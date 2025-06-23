@@ -48,29 +48,29 @@ public:
 		recursosTecnologicos = gcnew List<CRecursoTecnologico^>();
 
 		if (rutaFondo->Contains("Mundo1")) {
-			CRecursoTecnologico^ recurso1 = gcnew CRecursoTecnologico("Robotica.png", 0, 0, TipoRecursoTecnologico::Robotica);
+			CRecursoTecnologico^ recurso1 = gcnew CRecursoTecnologico("Robotica.png", 300, 300, TipoRecursoTecnologico::Robotica);
 			recursosTecnologicos->Add(recurso1);
 
-			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("IA.png", 800, 0, TipoRecursoTecnologico::InteligenciaArtificial);
+			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("IA.png", 350, 300, TipoRecursoTecnologico::InteligenciaArtificial);
 			recursosTecnologicos->Add(recurso2);
 
-			CRecursoTecnologico^ recurso3 = gcnew CRecursoTecnologico("BigData.png", 300, 240, TipoRecursoTecnologico::BigData);
+			CRecursoTecnologico^ recurso3 = gcnew CRecursoTecnologico("BigData.png", 400, 300, TipoRecursoTecnologico::BigData);
 			recursosTecnologicos->Add(recurso3);
 
-			CRecursoTecnologico^ recurso4 = gcnew CRecursoTecnologico("Panel.png", 600, 0, TipoRecursoTecnologico::EnergiaSostenible);
+			CRecursoTecnologico^ recurso4 = gcnew CRecursoTecnologico("Panel.png", 450, 300, TipoRecursoTecnologico::EnergiaSostenible);
 			recursosTecnologicos->Add(recurso4);
 		}
 
 		recursosHumanos = gcnew List<CRecursoHumano^>();
 
 		if (rutaFondo->Contains("Mundo2")) {
-			CRecursoHumano^ recurso1 = gcnew CRecursoHumano("Empatia.png", 100, 100, TipoHabilidadHumana::Empatia);
+			CRecursoHumano^ recurso1 = gcnew CRecursoHumano("Empatia.png", 300, 300, TipoHabilidadHumana::Empatia);
 			recursosHumanos->Add(recurso1);
-			CRecursoHumano^ recurso2 = gcnew CRecursoHumano("Etica.png", 200, 200, TipoHabilidadHumana::Etica);
+			CRecursoHumano^ recurso2 = gcnew CRecursoHumano("Etica.png", 350, 300, TipoHabilidadHumana::Etica);
 			recursosHumanos->Add(recurso2);
-			CRecursoHumano^ recurso3 = gcnew CRecursoHumano("Creatividad.png", 300, 300, TipoHabilidadHumana::Creatividad);
+			CRecursoHumano^ recurso3 = gcnew CRecursoHumano("Creatividad.png", 400, 300, TipoHabilidadHumana::Creatividad);
 			recursosHumanos->Add(recurso3);
-			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("Equipo.png", 400, 400, TipoHabilidadHumana::TrabajoEnEquipo);
+			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("Equipo.png", 450, 300, TipoHabilidadHumana::TrabajoEnEquipo);
 			recursosHumanos->Add(recurso4);
 		}
 
@@ -80,12 +80,12 @@ public:
 			plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
 
 			CPlataformaConstruccion^ plataforma = gcnew CPlataformaConstruccion(
-				300, 470, "Platform.png", "Robot.png"
+				310, 400, "Platform.png", "Robot.png"
 			);
 
 			// Coordenadas iniciales centradas para 5 cuadros de 32px + espaciado
-			int inicioX = 260;  // podés ajustar este valor horizontal
-			int yEspacios = 550;
+			int inicioX = 320;  // podés ajustar este valor horizontal
+			int yEspacios = 600;
 			int separacion = 40;
 
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
@@ -100,13 +100,31 @@ public:
 				inicioX + 4 * separacion, yEspacios, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
 
 			plataformasConstruccion->Add(plataforma);
+
+			// PLATAFORMA 2 — CENTRO DE SALUD TECNOLÓGICO
+			CPlataformaConstruccion^ plataforma2 = gcnew CPlataformaConstruccion(
+				610, 400, "Platform.png", "Hospital.png"
+			);
+
+			int inicioX2 = 620;
+			int yEspacios2 = 600;
+			int separacion2 = 40;
+
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 0 * separacion2, yEspacios2, TipoDeRecurso::BigData, "BigData_Gris.png", "BigData.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 1 * separacion2, yEspacios2, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 2 * separacion2, yEspacios2, TipoDeRecurso::TrabajoEnEquipo, "Equipo_Gris.png", "Equipo.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 3 * separacion2, yEspacios2, TipoDeRecurso::InteligenciaArtificial, "IA_Gris.png", "IA.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 4 * separacion2, yEspacios2, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
+
+			plataformasConstruccion->Add(plataforma2);
+
 		}
 	}
 
 	void dibujar(Graphics^ g, int ancho, int alto) {
 		g->DrawImage(fondo, Rectangle(0, 0, ancho, alto));
 
-		for each (CEnemigo ^ e in enemigos) {
+		for each(CEnemigo ^ e in enemigos) {
 			e->mover();
 			e->dibujar(g);
 		}
@@ -115,21 +133,21 @@ public:
 			perseguidor->dibujar(g);
 		}
 
-		for each (CAliado ^ a in aliados) {
+		for each(CAliado ^ a in aliados) {
 			a->mover();
 			a->dibujar(g);
 		}
 
-		for each (CRecursoTecnologico ^ r in recursosTecnologicos) {
+		for each(CRecursoTecnologico ^ r in recursosTecnologicos) {
 			r->dibujar(g);
 		}
 
-		for each (CRecursoHumano ^ r in recursosHumanos) {
+		for each(CRecursoHumano ^ r in recursosHumanos) {
 			r->dibujar(g);
 		}
 
 		if (plataformasConstruccion != nullptr) {
-			for each (CPlataformaConstruccion ^ p in plataformasConstruccion)
+			for each(CPlataformaConstruccion ^ p in plataformasConstruccion)
 				p->dibujar(g);
 		}
 	}
@@ -153,7 +171,7 @@ public:
 	}
 
 	bool detectarColision(Rectangle jugadorRect) {
-		for each (CEnemigo ^ e in enemigos) {
+		for each(CEnemigo ^ e in enemigos) {
 			if (jugadorRect.IntersectsWith(e->obtenerRectangulo())) {
 				return true;
 			}
