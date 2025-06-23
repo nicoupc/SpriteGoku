@@ -375,23 +375,21 @@ namespace SpriteGoku {
 			}
 		}
 
-		if (mundoActual == 2) {
-			int largoMax = 200;
-			int altoBarra = 20;
-			int xBarra = this->ClientSize.Width / 2 - largoMax / 2;
-			int yBarra = this->ClientSize.Height - 35;
+		int largoMax = 200;
+		int altoBarra = 20;
+		int xBarra = this->ClientSize.Width - largoMax - 20;
+		int yBarra = this->ClientSize.Height - 35;
 
-			// Marco gris
-			buffer->Graphics->FillRectangle(Brushes::Gray, xBarra, yBarra, largoMax, altoBarra);
+		// Marco gris
+		buffer->Graphics->FillRectangle(Brushes::Gray, xBarra, yBarra, largoMax, altoBarra);
 
-			// Avance verde
-			int largoActual = (progresoConstruccion * largoMax) / 100;
-			buffer->Graphics->FillRectangle(Brushes::LimeGreen, xBarra, yBarra, largoActual, altoBarra);
+		// Avance verde
+		int largoActual = (progresoConstruccion * largoMax) / 100;
+		buffer->Graphics->FillRectangle(Brushes::LimeGreen, xBarra, yBarra, largoActual, altoBarra);
 
-			// Porcentaje al centro
-			String^ textoPorcentaje = progresoConstruccion.ToString() + "%";
-			buffer->Graphics->DrawString(textoPorcentaje, fuente, Brushes::Black, xBarra + largoMax + 10, yBarra - 2);
-		}
+		// Porcentaje al centro
+		String^ textoPorcentaje = progresoConstruccion.ToString() + "%";
+		buffer->Graphics->DrawString(textoPorcentaje, fuente, Brushes::White, xBarra - 70, yBarra - 5);
 
 		buffer->Render(g);
 
