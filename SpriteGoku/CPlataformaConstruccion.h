@@ -11,6 +11,7 @@ private:
 	List<CEspacioConstruible^>^ espacios;
 	bool construida;
 	int alphaConstruccion; // transparencia inicial
+	bool eliminada;
 
 public:
 	CPlataformaConstruccion(int px, int py, String^ rutaPlataforma, String^ rutaConstruida) {
@@ -21,6 +22,7 @@ public:
 		espacios = gcnew List<CEspacioConstruible^>();
 		construida = false;
 		alphaConstruccion = 0;
+		eliminada = false;
 	}
 
 	void agregarEspacio(CEspacioConstruible^ espacio) {
@@ -29,12 +31,26 @@ public:
 
 	void dibujar(Graphics^ g) {
 		// Dibujar espacios primero (debajo de la plataforma)
-		for each(CEspacioConstruible ^ espacio in espacios) {
+		for each (CEspacioConstruible ^ espacio in espacios) {
 			espacio->dibujar(g);
 		}
 
-		// Dibujar la plataforma
-		g->DrawImage(imagenPlataforma, x + 50, y + 100);
+		// Dibujar la plataforma base con transparencia usando su tamaño real
+		if (!eliminada) {
+			float alpha = construida ? (1.0f - alphaConstruccion / 255.0f) : 1.0f;
+
+			System::Drawing::Imaging::ColorMatrix^ cmPlataforma = gcnew System::Drawing::Imaging::ColorMatrix();
+			cmPlataforma->Matrix33 = alpha;
+
+			System::Drawing::Imaging::ImageAttributes^ iaPlataforma = gcnew System::Drawing::Imaging::ImageAttributes();
+			iaPlataforma->SetColorMatrix(cmPlataforma);
+
+			int ancho = imagenPlataforma->Width;
+			int alto = imagenPlataforma->Height;
+			Rectangle destino = Rectangle(x, y, ancho, alto);
+
+			g->DrawImage(imagenPlataforma, destino, 0, 0, ancho, alto, GraphicsUnit::Pixel, iaPlataforma);
+		}
 
 		// Dibujar la construcción final solo si está completa
 		if (construida) {
@@ -42,6 +58,10 @@ public:
 			// Incrementar alpha para hacerla visible gradualmente
 			if (alphaConstruccion < 255) {
 				alphaConstruccion += 10; // velocidad del fade-in
+			}
+
+			if (alphaConstruccion >= 255) {
+				eliminada = true; // marca para eliminar
 			}
 
 			int anchoObjeto = 250;
@@ -67,7 +87,7 @@ public:
 	}
 
 	void verificarConstruccion() {
-		for each(CEspacioConstruible ^ espacio in espacios)
+		for each (CEspacioConstruible ^ espacio in espacios)
 			if (!espacio->estaLleno())
 				return;
 
@@ -83,6 +103,10 @@ public:
 
 	bool estaConstruida() {
 		return construida;
+	}
+
+	bool estaEliminada() {
+		return eliminada;
 	}
 
 	Rectangle obtenerZonaConstruida() {

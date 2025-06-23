@@ -80,7 +80,7 @@ public:
 			plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
 
 			CPlataformaConstruccion^ plataforma = gcnew CPlataformaConstruccion(
-				250, 400, "Platform.png", "Robot.png"
+				250, 400, "Platform220.png", "Robot.png"
 			);
 
 			// Coordenadas iniciales centradas para 5 cuadros de 32px + espaciado
@@ -98,7 +98,7 @@ public:
 
 			// PLATAFORMA 2 — CENTRO DE SALUD TECNOLÓGICO
 			CPlataformaConstruccion^ plataforma2 = gcnew CPlataformaConstruccion(
-				610, 400, "Platform.png", "Hospital.png"
+				610, 400, "Platform220.png", "Hospital.png"
 			);
 
 			int inicioX2 = 620;
@@ -115,7 +115,7 @@ public:
 
 			// PLATAFORMA 3 — CENTRO DE INVESTIGACIÓN
 			CPlataformaConstruccion^ plataforma3 = gcnew CPlataformaConstruccion(
-				250, 100, "Platform.png", "CentroInvestigacion.png"
+				250, 100, "Platform220.png", "CentroInvestigacion.png"
 			);
 
 			int inicioX3 = 260;
@@ -132,7 +132,7 @@ public:
 
 			// PLATAFORMA 4 — CENTRO DE ENERGÍA HUMANO-TECNOLOGICO
 			CPlataformaConstruccion^ plataforma4 = gcnew CPlataformaConstruccion(
-				610, 100, "Platform.png", "CentroEnergia.png"
+				610, 100, "Platform220.png", "CentroEnergia.png"
 			);
 
 			int inicioX4 = 620;
