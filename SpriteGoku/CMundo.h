@@ -51,7 +51,7 @@ public:
 			CRecursoTecnologico^ recurso1 = gcnew CRecursoTecnologico("Robotica.png", 300, 300, TipoRecursoTecnologico::Robotica);
 			recursosTecnologicos->Add(recurso1);
 
-			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("IA.png", 350, 300, TipoRecursoTecnologico::InteligenciaArtificial);
+			CRecursoTecnologico^ recurso2 = gcnew CRecursoTecnologico("InteligenciaArtificial.png", 350, 300, TipoRecursoTecnologico::InteligenciaArtificial);
 			recursosTecnologicos->Add(recurso2);
 
 			CRecursoTecnologico^ recurso3 = gcnew CRecursoTecnologico("BigData.png", 400, 300, TipoRecursoTecnologico::BigData);
@@ -70,7 +70,7 @@ public:
 			recursosHumanos->Add(recurso2);
 			CRecursoHumano^ recurso3 = gcnew CRecursoHumano("Creatividad.png", 400, 300, TipoHabilidadHumana::Creatividad);
 			recursosHumanos->Add(recurso3);
-			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("Equipo.png", 450, 300, TipoHabilidadHumana::TrabajoEnEquipo);
+			CRecursoHumano^ recurso4 = gcnew CRecursoHumano("TrabajoEnEquipo.png", 450, 300, TipoHabilidadHumana::TrabajoEnEquipo);
 			recursosHumanos->Add(recurso4);
 		}
 
@@ -80,18 +80,18 @@ public:
 			plataformasConstruccion = gcnew List<CPlataformaConstruccion^>();
 
 			CPlataformaConstruccion^ plataforma = gcnew CPlataformaConstruccion(
-				310, 400, "Platform.png", "Robot.png"
+				250, 400, "Platform.png", "Robot.png"
 			);
 
 			// Coordenadas iniciales centradas para 5 cuadros de 32px + espaciado
-			int inicioX = 320;  // podés ajustar este valor horizontal
+			int inicioX = 260;  // podés ajustar este valor horizontal
 			int yEspacios = 600;
 			int separacion = 40;
 
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
 				inicioX + 0 * separacion, yEspacios, TipoDeRecurso::Robotica, "Robotica_Gris.png", "Robotica.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
-				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "IA_Gris.png", "IA.png"));
+				inicioX + 1 * separacion, yEspacios, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
 				inicioX + 2 * separacion, yEspacios, TipoDeRecurso::Creatividad, "Creatividad_Gris.png", "Creatividad.png"));
 			plataforma->agregarEspacio(gcnew CEspacioConstruible(
@@ -112,12 +112,11 @@ public:
 
 			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 0 * separacion2, yEspacios2, TipoDeRecurso::BigData, "BigData_Gris.png", "BigData.png"));
 			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 1 * separacion2, yEspacios2, TipoDeRecurso::Empatia, "Empatia_Gris.png", "Empatia.png"));
-			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 2 * separacion2, yEspacios2, TipoDeRecurso::TrabajoEnEquipo, "Equipo_Gris.png", "Equipo.png"));
-			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 3 * separacion2, yEspacios2, TipoDeRecurso::InteligenciaArtificial, "IA_Gris.png", "IA.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 2 * separacion2, yEspacios2, TipoDeRecurso::TrabajoEnEquipo, "TrabajoEnEquipo_Gris.png", "TrabajoEnEquipo.png"));
+			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 3 * separacion2, yEspacios2, TipoDeRecurso::InteligenciaArtificial, "InteligenciaArtificial_Gris.png", "InteligenciaArtificial.png"));
 			plataforma2->agregarEspacio(gcnew CEspacioConstruible(inicioX2 + 4 * separacion2, yEspacios2, TipoDeRecurso::Etica, "Etica_Gris.png", "Etica.png"));
 
 			plataformasConstruccion->Add(plataforma2);
-
 		}
 	}
 

@@ -82,7 +82,7 @@ namespace SpriteGoku {
 			}
 
 			iconosTecnologicos[TipoRecursoTecnologico::Robotica] = gcnew Bitmap("Robotica.png");
-			iconosTecnologicos[TipoRecursoTecnologico::InteligenciaArtificial] = gcnew Bitmap("IA.png");
+			iconosTecnologicos[TipoRecursoTecnologico::InteligenciaArtificial] = gcnew Bitmap("InteligenciaArtificial.png");
 			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
 			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
 
@@ -93,7 +93,7 @@ namespace SpriteGoku {
 			iconosHumanos[TipoHabilidadHumana::Empatia] = gcnew Bitmap("Empatia.png");
 			iconosHumanos[TipoHabilidadHumana::Etica] = gcnew Bitmap("Etica.png");
 			iconosHumanos[TipoHabilidadHumana::Creatividad] = gcnew Bitmap("Creatividad.png");
-			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("Equipo.png");
+			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("TrabajoEnEquipo.png");
 		}
 
 		TipoHabilidadHumana convertirAHabilidadHumana(TipoDeRecurso tipo) {
