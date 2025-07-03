@@ -9,6 +9,7 @@ enum Direcciones
 
 ref class CJugador
 {
+public:
 	int x, y, dx, dy;
 	int ancho, alto;
 	int indiceX, indiceY;

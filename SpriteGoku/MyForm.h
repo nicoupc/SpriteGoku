@@ -4,6 +4,7 @@
 #include "CMundo.h"
 #include "CEnemigo.h"
 #include "CPlataformaConstruccion.h"
+#include "CDisparo.h"
 
 const int ALTURA_HUD = 60;
 
@@ -49,6 +50,9 @@ namespace SpriteGoku {
 		int progresoConstruccion = 0;
 		int cantidadEnemigos;
 		int cantidadAliados;
+		List<CDisparo^>^ disparos = gcnew List<CDisparo^>();
+		Bitmap^ bmpDisparo = gcnew Bitmap("Disparo.png"); // Asegurate de tener esta imagen
+
 
 	public:
 		MyForm(void)
@@ -219,6 +223,29 @@ namespace SpriteGoku {
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
 
 		jugador->dibujar(buffer, escudoActivo ? bmpEscudo : bmp, invulnerable);
+
+		for (int i = disparos->Count - 1; i >= 0; i--) {
+			CDisparo^ d = disparos[i];
+			d->mover();
+			d->dibujar(buffer->Graphics);
+
+			// Eliminar si sale de pantalla
+			if (d->estaFueraPantalla(this->ClientSize.Width, this->ClientSize.Height)) {
+				disparos->RemoveAt(i);
+				continue;
+			}
+
+			// Detectar colisión con enemigos
+			for each (CEnemigo ^ enemigo in mundos[mundoActual]->enemigos) {
+				if (enemigo->getEstado() == EstadoEnemigo::Activo &&
+					d->obtenerRectangulo().IntersectsWith(enemigo->obtenerRectangulo())) {
+					enemigo->eliminar();
+					disparos->RemoveAt(i);
+					break;
+				}
+			}
+		}
+
 
 		// Procesar colisión con aliados
 		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
@@ -457,6 +484,14 @@ namespace SpriteGoku {
 		if (e->KeyCode == Keys::D1) mundoActual = 0;
 		else if (e->KeyCode == Keys::D2) mundoActual = 1;
 		else if (e->KeyCode == Keys::D3) mundoActual = 2;
+
+		if (e->KeyCode == Keys::Space && escudoActivo) {
+			int x = jugador->getX() + 20;
+			int y = jugador->getY() + 20;
+			Direcciones dir = jugador->ultimaTecla;
+			CDisparo^ nuevoDisparo = gcnew CDisparo("Disparo.png", x, y, dir);
+			disparos->Add(nuevoDisparo);
+		}
 	}
 	};
 }

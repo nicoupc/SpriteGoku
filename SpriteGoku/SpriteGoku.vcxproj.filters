@@ -59,5 +59,8 @@
     <ClInclude Include="CPlataformaConstruccion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CDisparo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

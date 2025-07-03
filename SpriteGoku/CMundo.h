@@ -14,7 +14,7 @@ using namespace System::Drawing;
 using namespace System::Collections::Generic;
 
 ref class CMundo {
-protected:
+public:
 	Bitmap^ fondo;
 	List<CEnemigo^>^ enemigos;
 

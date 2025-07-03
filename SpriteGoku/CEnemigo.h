@@ -61,7 +61,7 @@ public:
 
 		if (estado == EstadoEnemigo::Reapareciendo) {
 			contadorReaparicion++;
-			visible = (contadorReaparicion / 10) % 2 == 0;
+			visible = (contadorReaparicion / 3) % 2 == 0;
 			if (contadorReaparicion >= 40) {
 				estado = EstadoEnemigo::Activo;
 				visible = true;
@@ -152,6 +152,9 @@ public:
 	}
 
 	Rectangle obtenerRectangulo() {
+		if (estado != EstadoEnemigo::Activo)
+			return Rectangle(0, 0, 0, 0); // sin colisión mientras reaparece
+
 		return Rectangle(x + 10, y + 10, escalaAncho - 20, escalaAlto - 20);
 	}
 
