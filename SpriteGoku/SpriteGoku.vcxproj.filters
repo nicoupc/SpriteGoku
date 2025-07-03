@@ -32,15 +32,6 @@
     <ClInclude Include="CEnemigo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CEnemigoPatrullaSI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnemigoPatrullaSD.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnemigoPerseguidor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CAliado.h">
       <Filter>Header Files</Filter>
     </ClInclude>

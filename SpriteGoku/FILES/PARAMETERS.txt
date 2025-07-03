@@ -1,0 +1,6 @@
+duracion=120
+velocidad_duracion=5
+vidas=3
+enemigos=5
+aliados=3
+escudo_duracion=10

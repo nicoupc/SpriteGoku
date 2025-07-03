@@ -23,30 +23,32 @@ namespace SpriteGoku {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	private:
-		CJugador* jugador = new CJugador(400, 300);
+		CJugador^ jugador = gcnew CJugador(400, 300);
 		Bitmap^ bmp;
 		Bitmap^ bmpEscudo;
 		array<CMundo^>^ mundos;
-		int mundoActual = 2;
-		int tiempoRestante = 120;              // Tiempo en segundos
-		int vidas = 3;                         // Cantidad inicial de vidas
-		int framesAcumulados = 0;             // Para contar tiempo usando los ticks del timer
+		int mundoActual;
+		int tiempoRestante; // Tiempo en segundos
+		int vidas; // Cantidad inicial de vidas
+		int framesAcumulados = 0; // Para contar tiempo usando los ticks del timer
 		System::Drawing::Font^ fuente = gcnew System::Drawing::Font("Arial", 19, FontStyle::Bold);
 		Brush^ brocha = Brushes::White;
 		Stopwatch^ relojTiempo = gcnew Stopwatch();
 		bool invulnerable = false;
 		int tiempoInvulnerabilidad = 0;
 		bool escudoActivo = false;
-		int duracionEscudo = 10; // en segundos
+		int duracionEscudo;
 		Stopwatch^ relojEscudo = gcnew Stopwatch();
 		bool velocidadActiva = false;
-		int duracionVelocidad = 5; // segundos
+		int duracionVelocidad;
 		Stopwatch^ relojVelocidad = gcnew Stopwatch();
 		Dictionary<TipoRecursoTecnologico, int>^ inventarioTecnologico = gcnew Dictionary<TipoRecursoTecnologico, int>();
 		Dictionary<TipoRecursoTecnologico, Bitmap^>^ iconosTecnologicos = gcnew Dictionary<TipoRecursoTecnologico, Bitmap^>();
 		Dictionary<TipoHabilidadHumana, int>^ inventarioHumano = gcnew Dictionary<TipoHabilidadHumana, int>();
 		Dictionary<TipoHabilidadHumana, Bitmap^>^ iconosHumanos = gcnew Dictionary<TipoHabilidadHumana, Bitmap^>();
 		int progresoConstruccion = 0;
+		int cantidadEnemigos;
+		int cantidadAliados;
 
 	public:
 		MyForm(void)
@@ -55,28 +57,60 @@ namespace SpriteGoku {
 			//
 			//TODO: Add the constructor code here
 			//
+
+			// Paso 1: Ruta del archivo
+			String^ ruta = "FILES/PARAMETERS.txt";
+
+			// Paso 2: Verificar si el archivo existe
+			if (System::IO::File::Exists(ruta)) {
+				// Paso 3: Leer todas las líneas del archivo
+				array<String^>^ lineas = System::IO::File::ReadAllLines(ruta);
+
+				// Paso 4: Procesar cada línea
+				for each (String ^ linea in lineas) {
+					array<String^>^ partes = linea->Split('=');
+					if (partes->Length == 2) {
+						String^ clave = partes[0]->Trim()->ToLower();
+						String^ valor = partes[1]->Trim();
+
+						// Paso 5: Aplicar valores según la clave
+						if (clave == "duracion") {
+							tiempoRestante = Int32::Parse(valor);
+						}
+						else if (clave == "velocidad_duracion") {
+							duracionVelocidad = Int32::Parse(valor);
+						}
+						else if (clave == "vidas") {
+							vidas = Int32::Parse(valor);
+						}
+						else if (clave == "enemigos") {
+							cantidadEnemigos = Int32::Parse(valor);
+						}
+						else if (clave == "aliados") {
+							cantidadAliados = Int32::Parse(valor);
+						}
+						else if (clave == "escudo_duracion") {
+							duracionEscudo = Int32::Parse(valor);
+						}
+					}
+				}
+			}
+			else {
+				MessageBox::Show("No se encontró el archivo PARAMETERS.txt en la carpeta FILES.", "Advertencia", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+
+
 			relojTiempo->Start();
 			mundos = gcnew array<CMundo^>(3);
 			mundos[0] = gcnew CMundo("Mundo1.jpg");
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
 			mundos[2] = gcnew CMundo("Mundo3.JPG");
 
-			mundos[0]->agregarPatrullaSI("Dark.png", 10, 180, 15, 22, 12);
-
-			mundos[1]->agregarPatrullaSI("Freezer.png", 10, 180, 15, 22, 12);
-
-			int spriteAncho = 32;
-			int recorrido = 90;
-			int xInicio = 790 - spriteAncho - recorrido;
-			mundos[1]->agregarPatrullaSD("Majinbuu.png", xInicio, 0, 15, 22, 12);
-			mundos[0]->agregarPatrullaSD("Valkyr.png", xInicio, 0, 15, 22, 12);
-
-			mundos[1]->agregarPerseguidor("Wolf.png", 450, 600, 8);
-			mundos[0]->agregarPerseguidor("Night.png", 450, 600, 8);
+			mundos[0]->generarEnemigos(cantidadEnemigos, 1);
+			mundos[1]->generarEnemigos(cantidadEnemigos, 2);
 
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
-			//bmpEscudo = gcnew Bitmap("Barril.png");
 
 			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				inventarioTecnologico[tipo] = 0;
@@ -179,7 +213,7 @@ namespace SpriteGoku {
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
 
 		buffer->Graphics->Clear(Color::White);
-		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height);
+		mundos[mundoActual]->dibujar(buffer->Graphics, this->ClientSize.Width, this->ClientSize.Height, jugador);
 
 		jugador->mover(buffer, bmp);
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
@@ -207,7 +241,7 @@ namespace SpriteGoku {
 			}
 		}
 
-		// Procesar colisión con recursos tecnológicos
+		// Procesar colisión con recursos tecnológic	os
 		for each (CRecursoTecnologico ^ recurso in mundos[mundoActual]->recursosTecnologicos) {
 			if (recurso->estaVisible() && recurso->colisionaCon(jugador->obtenerRectangulo())) {
 				recurso->desaparecer();
@@ -293,8 +327,6 @@ namespace SpriteGoku {
 			}
 		}
 
-		mundos[mundoActual]->moverPerseguidor(jugador->obtenerX(), jugador->obtenerY());
-
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);
 		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, Brushes::Red, 5, 30);
 		if (escudoActivo) {
@@ -375,6 +407,7 @@ namespace SpriteGoku {
 			}
 		}
 
+		// Dibujar barra de progreso de construcción
 		int largoMax = 200;
 		int altoBarra = 20;
 		int xBarra = this->ClientSize.Width - largoMax - 20;

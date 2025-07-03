@@ -7,7 +7,7 @@ enum Direcciones
 	Ninguna, Abajo, Izquierda, Derecha, Arriba
 };
 
-class CJugador
+ref class CJugador
 {
 	int x, y, dx, dy;
 	int ancho, alto;
@@ -17,9 +17,6 @@ class CJugador
 	float factorVelocidad = 1.0f;
 
 public:
-	CJugador();
-	~CJugador();
-
 	Direcciones direccion;
 
 	CJugador(int x, int y)
@@ -57,8 +54,8 @@ public:
 		tiempoInvulnerabilidad = valor;
 	}
 
-	int obtenerX() { return x; }
-	int obtenerY() { return y; }
+	int getX() { return x; }
+	int getY() { return y; }
 
 	void activarVelocidad(float factor) {
 		factorVelocidad = factor;

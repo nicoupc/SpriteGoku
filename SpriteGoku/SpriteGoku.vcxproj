@@ -130,9 +130,6 @@
     <ClInclude Include="CAliadoVelocidad.h" />
     <ClInclude Include="CAliadoVida.h" />
     <ClInclude Include="CEnemigo.h" />
-    <ClInclude Include="CEnemigoPatrullaSI.h" />
-    <ClInclude Include="CEnemigoPatrullaSD.h" />
-    <ClInclude Include="CEnemigoPerseguidor.h" />
     <ClInclude Include="CEspacioConstruible.h" />
     <ClInclude Include="Cjugador.h" />
     <ClInclude Include="CMundo.h" />

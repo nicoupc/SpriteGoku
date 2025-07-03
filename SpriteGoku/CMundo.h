@@ -1,9 +1,6 @@
 #pragma once
 
 #include "CEnemigo.h"
-#include "CEnemigoPatrullaSI.h"
-#include "CEnemigoPatrullaSD.h"
-#include "CEnemigoPerseguidor.h"
 #include "CAliado.h"
 #include "CAliadoVida.h"
 #include "CAliadoEscudo.h"
@@ -20,7 +17,6 @@ ref class CMundo {
 protected:
 	Bitmap^ fondo;
 	List<CEnemigo^>^ enemigos;
-	CEnemigoPerseguidor^ perseguidor;
 
 public:
 	List<CAliado^>^ aliados;
@@ -32,7 +28,6 @@ public:
 	CMundo(String^ rutaFondo) {
 		fondo = gcnew Bitmap(rutaFondo);
 		enemigos = gcnew List<CEnemigo^>();
-
 		aliados = gcnew List<CAliado^>();
 
 		// Solo crear aliados en mundo 0 y 1
@@ -178,65 +173,65 @@ public:
 		}
 	}
 
-	void dibujar(Graphics^ g, int ancho, int alto) {
+	void generarEnemigos(int cantidad, int mundo) {
+		enemigos->Clear(); // Limpiar enemigos anteriores
+
+		for (int i = 0; i < cantidad; i++) {
+			// Elegir sprite según mundo y repetir si hay más enemigos que sprites
+			int spriteIndex = (i % 5) + 1;
+			String^ rutaSprite = "Enemigo" + mundo.ToString() + "_" + spriteIndex.ToString() + ".png";
+
+			// Posición aleatoria según mundo
+			int x, y;
+			Random^ rnd = gcnew Random(Environment::TickCount + i * 100);
+
+			if (mundo == 1) {
+				x = rnd->Next(100, 500); // más a la izquierda
+			}
+			else if (mundo == 2) {
+				x = rnd->Next(400, 800); // más a la derecha
+			}
+
+			y = rnd->Next(100, 500);
+
+			// Crear enemigo con velocidad base 4
+			CEnemigo^ enemigo = gcnew CEnemigo(rutaSprite, x, y, 4);
+			enemigos->Add(enemigo);
+		}
+	}
+
+	void dibujar(Graphics^ g, int ancho, int alto, CJugador^ jugador){
 		g->DrawImage(fondo, Rectangle(0, 0, ancho, alto));
 
-		for each(CEnemigo ^ e in enemigos) {
-			e->mover();
+		for each (CEnemigo ^ e in enemigos) {
+			e->mover(jugador->getX(), jugador->getY());
 			e->dibujar(g);
 		}
 
-		if (perseguidor != nullptr) {
-			perseguidor->dibujar(g);
-		}
-
-		for each(CAliado ^ a in aliados) {
+		for each (CAliado ^ a in aliados) {
 			a->mover();
 			a->dibujar(g);
 		}
 
-		for each(CRecursoTecnologico ^ r in recursosTecnologicos) {
+		for each (CRecursoTecnologico ^ r in recursosTecnologicos) {
 			r->dibujar(g);
 		}
 
-		for each(CRecursoHumano ^ r in recursosHumanos) {
+		for each (CRecursoHumano ^ r in recursosHumanos) {
 			r->dibujar(g);
 		}
 
 		if (plataformasConstruccion != nullptr) {
-			for each(CPlataformaConstruccion ^ p in plataformasConstruccion)
+			for each (CPlataformaConstruccion ^ p in plataformasConstruccion)
 				p->dibujar(g);
 		}
 	}
 
-	void agregarPatrullaSI(String^ ruta, int x, int y, int subirAltura, int irDerecha, int velocidad) {
-		enemigos->Add(gcnew CEnemigoPatrullaSI(ruta, x, y, subirAltura, irDerecha, velocidad));
-	}
-
-	void agregarPatrullaSD(String^ ruta, int x, int y, int alto, int ancho, int vel) {
-		enemigos->Add(gcnew CEnemigoPatrullaSD(ruta, x, y, alto, ancho, vel));
-	}
-
-	void agregarPerseguidor(String^ ruta, int x, int y, int vel) {
-		perseguidor = gcnew CEnemigoPerseguidor(ruta, x, y, vel);
-	}
-
-	void moverPerseguidor(int jugadorX, int jugadorY) {
-		if (perseguidor != nullptr) {
-			perseguidor->moverHacia(jugadorX, jugadorY);
-		}
-	}
-
 	bool detectarColision(Rectangle jugadorRect) {
-		for each(CEnemigo ^ e in enemigos) {
+		for each (CEnemigo ^ e in enemigos) {
 			if (jugadorRect.IntersectsWith(e->obtenerRectangulo())) {
 				return true;
 			}
-		}
-
-		// También verificar con el perseguidor
-		if (perseguidor != nullptr && jugadorRect.IntersectsWith(perseguidor->obtenerRectangulo())) {
-			return true;
 		}
 
 		return false;
