@@ -20,6 +20,7 @@ private:
 	int tiempoReaparicion;
 	int contadorReaparicion;
 	bool visible;
+	int animacion;
 
 	Bitmap^ sprite;
 	EstadoEnemigo estado;
@@ -38,9 +39,17 @@ public:
 		tiempoReaparicion = 60; // frames
 		contadorReaparicion = 0;
 		visible = true;
+		animacion = 0;
 	}
 
 	void mover(int jugadorX, int jugadorY) {
+
+		// Limitar dentro de la pantalla (ajustá según el tamaño real del mapa)
+		int limiteIzquierdo = 0;
+		int limiteDerecho = 900 - escalaAncho;
+		int limiteSuperior = 0;
+		int limiteInferior = 650 - escalaAlto;
+
 		if (estado == EstadoEnemigo::Eliminado) {
 			contadorReaparicion++;
 			if (contadorReaparicion >= tiempoReaparicion) {
@@ -78,17 +87,46 @@ public:
 		// Movimiento por pasos
 		if (pasosRestantes == 0) {
 			direccion = rand() % 4;
-			pasosRestantes = 4;
+			pasosRestantes = 20 + rand() % 21; // entre 20 y 40 pasos
 		}
+
+		bool pudoMover = false;
 
 		switch (direccion) {
-		case 0: x += velocidad; break;
-		case 1: x -= velocidad; break;
-		case 2: y -= velocidad; break;
-		case 3: y += velocidad; break;
+		case 0: // derecha
+			if (x + velocidad <= limiteDerecho) {
+				x += velocidad;
+				pudoMover = true;
+			}
+			break;
+		case 1: // izquierda
+			if (x - velocidad >= limiteIzquierdo) {
+				x -= velocidad;
+				pudoMover = true;
+			}
+			break;
+		case 2: // arriba
+			if (y - velocidad >= limiteSuperior) {
+				y -= velocidad;
+				pudoMover = true;
+			}
+			break;
+		case 3: // abajo
+			if (y + velocidad <= limiteInferior) {
+				y += velocidad;
+				pudoMover = true;
+			}
+			break;
 		}
 
-		pasosRestantes--;
+		// Si no pudo moverse, cambiar de dirección y reiniciar pasos
+		if (!pudoMover) {
+			direccion = rand() % 4;
+			pasosRestantes = 20 + rand() % 21;
+		}
+		else {
+			pasosRestantes--;
+		}
 	}
 
 	void dibujar(Graphics^ g) {
@@ -104,13 +142,13 @@ public:
 		default: indiceY = 0; break;
 		}
 
-		static int animacion = 0;
 		animacion = (animacion + 1) % 4;
 		int indiceX = animacion;
 
 		Rectangle origen = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle destino = Rectangle(x, y, escalaAncho, escalaAlto);
 		g->DrawImage(sprite, destino, origen, GraphicsUnit::Pixel);
+		g->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo()); // Dibujar cuadrado rojo de colisión
 	}
 
 	Rectangle obtenerRectangulo() {

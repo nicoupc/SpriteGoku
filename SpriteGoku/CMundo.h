@@ -195,7 +195,7 @@ public:
 			y = rnd->Next(100, 500);
 
 			// Crear enemigo con velocidad base 4
-			CEnemigo^ enemigo = gcnew CEnemigo(rutaSprite, x, y, 4);
+			CEnemigo^ enemigo = gcnew CEnemigo(rutaSprite, x, y, 10);
 			enemigos->Add(enemigo);
 		}
 	}

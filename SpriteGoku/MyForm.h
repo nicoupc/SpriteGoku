@@ -27,7 +27,7 @@ namespace SpriteGoku {
 		Bitmap^ bmp;
 		Bitmap^ bmpEscudo;
 		array<CMundo^>^ mundos;
-		int mundoActual;
+		int mundoActual = 2;
 		int tiempoRestante; // Tiempo en segundos
 		int vidas; // Cantidad inicial de vidas
 		int framesAcumulados = 0; // Para contar tiempo usando los ticks del timer
