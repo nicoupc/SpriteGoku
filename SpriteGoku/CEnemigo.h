@@ -36,7 +36,7 @@ public:
 		direccion = rand() % 4;
 		pasosRestantes = 4;
 		estado = EstadoEnemigo::Activo;
-		tiempoReaparicion = 30; // frames
+		tiempoReaparicion = 20; // frames
 		contadorReaparicion = 0;
 		visible = true;
 		animacion = 0;

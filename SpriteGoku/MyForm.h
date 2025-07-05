@@ -50,6 +50,7 @@ namespace SpriteGoku {
 		int progresoConstruccion = 0;
 		int cantidadEnemigos;
 		int cantidadAliados;
+		int cantidadRecursos;
 		List<CDisparo^>^ disparos = gcnew List<CDisparo^>();
 		Bitmap^ bmpDisparo = gcnew Bitmap("Disparo.png"); // Asegurate de tener esta imagen
 
@@ -96,6 +97,9 @@ namespace SpriteGoku {
 						else if (clave == "escudo_duracion") {
 							duracionEscudo = Int32::Parse(valor);
 						}
+						else if (clave == "cantidad_recursos") {
+							cantidadRecursos = Int32::Parse(valor);
+						}
 					}
 				}
 			}
@@ -115,6 +119,9 @@ namespace SpriteGoku {
 
 			mundos[0]->generarAliados(cantidadAliados, 1);
 			mundos[1]->generarAliados(cantidadAliados, 2);
+
+			mundos[0]->generarRecursos(cantidadRecursos, 1);
+			mundos[1]->generarRecursos(cantidadRecursos, 2);
 
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
@@ -273,23 +280,18 @@ namespace SpriteGoku {
 			}
 		}
 
-		// Procesar colisión con recursos tecnológic	os
-		for each (CRecursoTecnologico ^ recurso in mundos[mundoActual]->recursosTecnologicos) {
+		for each (CRecurso ^ recurso in mundos[mundoActual]->recursos) {
 			if (recurso->estaVisible() && recurso->colisionaCon(jugador->obtenerRectangulo())) {
 				recurso->desaparecer();
-				TipoRecursoTecnologico tipo = recurso->obtenerTipo();
-				inventarioTecnologico[tipo]++;
 
-				// (Opcional) Podés mostrar un mensaje temporal aquí si querés
-			}
-		}
-
-		// Procesar colisión con habilidades humanas
-		for each (CRecursoHumano ^ habilidad in mundos[mundoActual]->recursosHumanos) {
-			if (habilidad->estaVisible() && habilidad->colisionaCon(jugador->obtenerRectangulo())) {
-				habilidad->desaparecer();
-				TipoHabilidadHumana tipo = habilidad->obtenerTipo();
-				inventarioHumano[tipo]++;
+				if (dynamic_cast<CRecursoTecnologico^>(recurso) != nullptr) {
+					TipoRecursoTecnologico tipo = ((CRecursoTecnologico^)recurso)->obtenerTipo();
+					inventarioTecnologico[tipo]++;
+				}
+				else if (dynamic_cast<CRecursoHumano^>(recurso) != nullptr) {
+					TipoHabilidadHumana tipo = ((CRecursoHumano^)recurso)->obtenerTipo();
+					inventarioHumano[tipo]++;
+				}
 			}
 		}
 

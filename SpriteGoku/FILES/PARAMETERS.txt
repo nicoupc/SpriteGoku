@@ -4,3 +4,4 @@ vidas=3
 enemigos=5
 aliados=3
 escudo_duracion=10
+cantidad_recursos=4
