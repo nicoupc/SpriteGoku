@@ -54,6 +54,9 @@ namespace SpriteGoku {
 		List<CDisparo^>^ disparos = gcnew List<CDisparo^>();
 		Bitmap^ bmpDisparo = gcnew Bitmap("Disparo.png"); // Asegurate de tener esta imagen
 		bool parpadeoEscudo = false;
+		Dictionary<TipoRecursoTecnologico, int>^ contadorParpadeoTec = gcnew Dictionary<TipoRecursoTecnologico, int>();
+		Dictionary<TipoHabilidadHumana, int>^ contadorParpadeoHum = gcnew Dictionary<TipoHabilidadHumana, int>();
+		int duracionParpadeo = 20; // 1 segundo si el timer es de 16 ms
 
 	public:
 		MyForm(void)
@@ -143,6 +146,14 @@ namespace SpriteGoku {
 			iconosHumanos[TipoHabilidadHumana::Etica] = gcnew Bitmap("Etica.png");
 			iconosHumanos[TipoHabilidadHumana::Creatividad] = gcnew Bitmap("Creatividad.png");
 			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("TrabajoEnEquipo.png");
+
+			// Inicializar contador de parpadeo
+			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+				contadorParpadeoTec[tipo] = 0;
+			}
+			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+				contadorParpadeoHum[tipo] = 0;
+			}
 		}
 
 		TipoHabilidadHumana convertirAHabilidadHumana(TipoDeRecurso tipo) {
@@ -297,10 +308,12 @@ namespace SpriteGoku {
 				if (dynamic_cast<CRecursoTecnologico^>(recurso) != nullptr) {
 					TipoRecursoTecnologico tipo = ((CRecursoTecnologico^)recurso)->obtenerTipo();
 					inventarioTecnologico[tipo]++;
+					contadorParpadeoTec[tipo] = duracionParpadeo; // Activar parpadeo
 				}
 				else if (dynamic_cast<CRecursoHumano^>(recurso) != nullptr) {
 					TipoHabilidadHumana tipo = ((CRecursoHumano^)recurso)->obtenerTipo();
 					inventarioHumano[tipo]++;
+					contadorParpadeoHum[tipo] = duracionParpadeo; // Activar parpadeo
 				}
 			}
 		}
@@ -388,12 +401,15 @@ namespace SpriteGoku {
 		int yHUD = this->ClientSize.Height - (sizeIcono + 8) * iconosTecnologicos->Count - 10;
 
 		for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
-			Bitmap^ icono = iconosTecnologicos[tipo];
-			int cantidad = inventarioTecnologico[tipo];
+			if (contadorParpadeoTec[tipo] == 0 || (contadorParpadeoTec[tipo] / 5) % 2 == 0) {
+				Bitmap^ icono = iconosTecnologicos[tipo];
+				int cantidad = inventarioTecnologico[tipo];
 
-			buffer->Graphics->DrawImage(icono, xHUD, yHUD, sizeIcono, sizeIcono);
-			String^ texto = "×" + cantidad.ToString();
-			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD + sizeIcono, yHUD);
+				buffer->Graphics->DrawImage(icono, xHUD, yHUD, sizeIcono, sizeIcono);
+				String^ texto = "×" + cantidad.ToString();
+				buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD + sizeIcono, yHUD);
+			}
+			if (contadorParpadeoTec[tipo] > 0) contadorParpadeoTec[tipo]--;
 			yHUD += sizeIcono + 8;
 		}
 
@@ -403,12 +419,15 @@ namespace SpriteGoku {
 		int sizeIcono_H = 25;
 
 		for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
-			Bitmap^ icono = iconosHumanos[tipo];
-			int cantidad = inventarioHumano[tipo];
+			if (contadorParpadeoHum[tipo] == 0 || (contadorParpadeoHum[tipo] / 5) % 2 == 0) {
+				Bitmap^ icono = iconosHumanos[tipo];
+				int cantidad = inventarioHumano[tipo];
 
-			buffer->Graphics->DrawImage(icono, xHUD_H, yHUD_H, sizeIcono_H, sizeIcono_H);
-			String^ texto = "×" + cantidad.ToString();
-			buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD_H + sizeIcono_H, yHUD_H);
+				buffer->Graphics->DrawImage(icono, xHUD_H, yHUD_H, sizeIcono_H, sizeIcono_H);
+				String^ texto = "×" + cantidad.ToString();
+				buffer->Graphics->DrawString(texto, fuente, Brushes::White, xHUD_H + sizeIcono_H, yHUD_H);
+			}
+			if (contadorParpadeoHum[tipo] > 0) contadorParpadeoHum[tipo]--;
 			yHUD_H += sizeIcono_H + 8;
 		}
 
