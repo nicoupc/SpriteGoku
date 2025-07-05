@@ -53,7 +53,7 @@ namespace SpriteGoku {
 		int cantidadRecursos;
 		List<CDisparo^>^ disparos = gcnew List<CDisparo^>();
 		Bitmap^ bmpDisparo = gcnew Bitmap("Disparo.png"); // Asegurate de tener esta imagen
-
+		bool parpadeoEscudo = false;
 
 	public:
 		MyForm(void)
@@ -232,7 +232,16 @@ namespace SpriteGoku {
 		jugador->mover(buffer, bmp);
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
 
-		jugador->dibujar(buffer, escudoActivo ? bmpEscudo : bmp, invulnerable);
+		bool mostrarGoku = true;
+
+		if (escudoActivo && parpadeoEscudo) {
+			// Parpadeo visual: alternar visibilidad cada 100 ms
+			mostrarGoku = (relojEscudo->ElapsedMilliseconds / 100) % 2 == 0;
+		}
+
+		if (mostrarGoku) {
+			jugador->dibujar(buffer, escudoActivo ? bmpEscudo : bmp, invulnerable);
+		}
 
 		for (int i = disparos->Count - 1; i >= 0; i--) {
 			CDisparo^ d = disparos[i];
@@ -430,8 +439,16 @@ namespace SpriteGoku {
 		}
 
 		if (escudoActivo) {
-			if (relojEscudo->ElapsedMilliseconds >= duracionEscudo * 1000) {
+			int tiempoTranscurrido = relojEscudo->ElapsedMilliseconds;
+			int tiempoRestanteEscudo = duracionEscudo * 1000 - tiempoTranscurrido;
+
+			if (tiempoRestanteEscudo <= 1000) {
+				parpadeoEscudo = true;
+			}
+
+			if (tiempoTranscurrido >= duracionEscudo * 1000) {
 				escudoActivo = false;
+				parpadeoEscudo = false;
 			}
 		}
 
