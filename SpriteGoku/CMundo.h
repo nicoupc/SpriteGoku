@@ -200,6 +200,52 @@ public:
 		}
 	}
 
+	void generarAliados(int cantidad, int mundo) {
+		aliados->Clear();
+
+		for (int i = 0; i < cantidad; i++) {
+			int tipo = i % 3;
+			CAliado^ aliado;
+
+			// Posición según mundo
+			int x, y;
+			Random^ rnd = gcnew Random(Environment::TickCount + i * 100);
+
+			if (mundo == 1) {
+				// Mundo 1: arriba, izquierda, abajo
+				array<Point>^ zonas = gcnew array<Point>{
+					Point(rnd->Next(100, 800), rnd->Next(100, 150)),   // arriba
+					Point(rnd->Next(100, 200), rnd->Next(200, 500)),   // izquierda
+					Point(rnd->Next(100, 800), rnd->Next(500, 600))    // abajo
+				};
+				Point p = zonas[i % 3];
+				x = p.X; y = p.Y;
+			}
+			else if (mundo == 2) {
+				// Mundo 2: arriba, derecha, abajo
+				array<Point>^ zonas = gcnew array<Point>{
+					Point(rnd->Next(100, 800), rnd->Next(100, 150)),   // arriba
+					Point(rnd->Next(700, 850), rnd->Next(200, 500)),   // derecha
+					Point(rnd->Next(100, 800), rnd->Next(500, 600))    // abajo
+				};
+				Point p = zonas[i % 3];
+				x = p.X; y = p.Y;
+			}
+			else {
+				x = rnd->Next(100, 800);
+				y = rnd->Next(100, 600);
+			}
+
+			switch (tipo) {
+			case 0: aliado = gcnew CAliadoVida("Sakura.png", x, y); break;
+			case 1: aliado = gcnew CAliadoEscudo("Vegeta.png", x, y); break;
+			case 2: aliado = gcnew CAliadoVelocidad("Sangohan.png", x, y); break;
+			}
+
+			aliados->Add(aliado);
+		}
+	}
+
 	void dibujar(Graphics^ g, int ancho, int alto, CJugador^ jugador){
 		g->DrawImage(fondo, Rectangle(0, 0, ancho, alto));
 

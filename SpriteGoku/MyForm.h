@@ -113,6 +113,9 @@ namespace SpriteGoku {
 			mundos[0]->generarEnemigos(cantidadEnemigos, 1);
 			mundos[1]->generarEnemigos(cantidadEnemigos, 2);
 
+			mundos[0]->generarAliados(cantidadAliados, 1);
+			mundos[1]->generarAliados(cantidadAliados, 2);
+
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
 
@@ -246,7 +249,6 @@ namespace SpriteGoku {
 			}
 		}
 
-
 		// Procesar colisión con aliados
 		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
 			if (a->estaVisible() && a->colisionaCon(jugador->obtenerRectangulo())) {
@@ -265,6 +267,9 @@ namespace SpriteGoku {
 					velocidadActiva = true;
 					jugador->activarVelocidad(2.0f); // Velocidad x2
 				}
+
+				// Eliminar aliado después de aplicar efecto
+				a->desaparecer();
 			}
 		}
 

@@ -14,7 +14,28 @@ public:
 	}
 
 	virtual void mover() override {
-		if (!visible) return;
+		if (enReaparicion) {
+			contadorReaparicion++;
+
+			if (!enParpadeo && contadorReaparicion >= tiempoEspera) {
+				reposicionar(900, 650); // ajustá según el tamaño de tu mapa
+				enParpadeo = true;
+				contadorReaparicion = 0;
+			}
+
+			if (enParpadeo) {
+				visible = (contadorReaparicion / 3) % 2 == 0;
+
+				if (contadorReaparicion >= tiempoParpadeo) {
+					enReaparicion = false;
+					enParpadeo = false;
+					visible = true;
+					contadorReaparicion = 0;
+				}
+			}
+
+			return;
+		}
 
 		// Movimiento horizontal suave
 		if (direccion == 0) x += 3;
