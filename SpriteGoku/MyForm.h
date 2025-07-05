@@ -265,7 +265,8 @@ namespace SpriteGoku {
 				if (dynamic_cast<CAliadoEscudo^>(a) != nullptr) {
 					relojEscudo->Restart();
 					escudoActivo = true;
-					invulnerable = true;
+					invulnerable = false;
+					tiempoInvulnerabilidad = 0;
 				}
 
 				// Activar velocidad si el aliado es de tipo velocidad
@@ -493,8 +494,8 @@ namespace SpriteGoku {
 		else if (e->KeyCode == Keys::D3) mundoActual = 2;
 
 		if (e->KeyCode == Keys::Space && escudoActivo) {
-			int x = jugador->getX() + 20;
-			int y = jugador->getY() + 20;
+			int x = jugador->getX() + (bmp->Width / 2) - (bmpDisparo->Width / 2);
+			int y = jugador->getY() + (bmp->Height / 2) - (bmpDisparo->Height / 2);
 			Direcciones dir = jugador->ultimaTecla;
 			CDisparo^ nuevoDisparo = gcnew CDisparo("Disparo.png", x, y, dir);
 			disparos->Add(nuevoDisparo);
