@@ -7,6 +7,7 @@
 #include "CDisparo.h"
 #include "CPortal.h"
 #include "Score.h"
+#include "VentanaRanking.h"
 
 const int ALTURA_HUD = 60;
 

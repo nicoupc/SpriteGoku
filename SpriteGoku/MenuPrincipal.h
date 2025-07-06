@@ -14,6 +14,7 @@ namespace SpriteGoku {
 	/// <summary>
 	/// Summary for MenuPrincipal
 	/// </summary>
+
 	public ref class MenuPrincipal : public System::Windows::Forms::Form
 	{
 	public:
@@ -96,6 +97,7 @@ namespace SpriteGoku {
 			this->btnRanking->TabIndex = 2;
 			this->btnRanking->Text = L"Ranking";
 			this->btnRanking->UseVisualStyleBackColor = true;
+			this->btnRanking->Click += gcnew System::EventHandler(this, &MenuPrincipal::btnRanking_Click);
 			// 
 			// btnInstrucciones
 			// 
@@ -158,5 +160,11 @@ namespace SpriteGoku {
 	private: System::Void btnSalir_Click(System::Object^ sender, System::EventArgs^ e) {
 		Application::Exit();
 	}
-	};
+	private: System::Void btnRanking_Click(System::Object^ sender, System::EventArgs^ e) {
+		VentanaRanking^ ventana = gcnew VentanaRanking();
+		this->Hide();
+		ventana->ShowDialog();
+		this->Show();
+	}
+};
 }
