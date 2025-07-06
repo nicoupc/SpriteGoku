@@ -5,6 +5,7 @@
 #include "CEnemigo.h"
 #include "CPlataformaConstruccion.h"
 #include "CDisparo.h"
+#include "CPortal.h"
 
 const int ALTURA_HUD = 60;
 
@@ -24,7 +25,7 @@ namespace SpriteGoku {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	private:
-		CJugador^ jugador = gcnew CJugador(400, 300);
+		CJugador^ jugador = gcnew CJugador(500, 350);
 		Bitmap^ bmp;
 		Bitmap^ bmpEscudo;
 		array<CMundo^>^ mundos;
@@ -57,6 +58,12 @@ namespace SpriteGoku {
 		Dictionary<TipoRecursoTecnologico, int>^ contadorParpadeoTec = gcnew Dictionary<TipoRecursoTecnologico, int>();
 		Dictionary<TipoHabilidadHumana, int>^ contadorParpadeoHum = gcnew Dictionary<TipoHabilidadHumana, int>();
 		int duracionParpadeo = 20; // 1 segundo si el timer es de 16 ms
+		CPortal^ portalIzquierdo;
+		CPortal^ portalDerecho;
+		Bitmap^ spritePortalTech;
+		Bitmap^ spritePortalHumano;
+		CPortal^ portalRegresoMundo1;
+		CPortal^ portalRegresoMundo2;
 
 	public:
 		MyForm(void)
@@ -116,6 +123,15 @@ namespace SpriteGoku {
 			mundos[0] = gcnew CMundo("Mundo1.jpg");
 			mundos[1] = gcnew CMundo("Mundo2.jpg");
 			mundos[2] = gcnew CMundo("Mundo3.JPG");
+
+			spritePortalTech = gcnew Bitmap("PortalTech.png");    // Sprite del portal izquierdo
+			spritePortalHumano = gcnew Bitmap("PortalHumano.png"); // Sprite del portal derecho
+
+			portalIzquierdo = gcnew CPortal(0, 350, spritePortalTech);     // Posición izquierda
+			portalDerecho = gcnew CPortal(900, 350, spritePortalHumano);   // Posición derecha
+
+			portalRegresoMundo1 = gcnew CPortal(900, 350, spritePortalTech); // Portal a la derecha
+			portalRegresoMundo2 = gcnew CPortal(0, 350, spritePortalHumano); // Portal a la izquierda
 
 			mundos[0]->generarEnemigos(cantidadEnemigos, 1);
 			mundos[1]->generarEnemigos(cantidadEnemigos, 2);
@@ -242,6 +258,47 @@ namespace SpriteGoku {
 
 		jugador->mover(buffer, bmp);
 		jugador->setTiempoInvulnerabilidad(tiempoInvulnerabilidad);
+
+		// Portales mundo 3
+		if (mundoActual == 2) {
+			portalIzquierdo->actualizar(jugador->obtenerRectangulo());
+			portalIzquierdo->dibujar(buffer->Graphics);
+
+			portalDerecho->actualizar(jugador->obtenerRectangulo());
+			portalDerecho->dibujar(buffer->Graphics);
+		}
+
+		// Portal de regreso a mundo 1
+		if (portalIzquierdo->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+			mundoActual = 0; // Mundo 1 (índice 0 en tu arreglo de mundos)
+			jugador->setPosicion(850, 350); // Aparece a la izquierda del nuevo portal
+		}
+
+		if (mundoActual == 0) { // Mundo 1
+			portalRegresoMundo1->actualizar(jugador->obtenerRectangulo());
+			portalRegresoMundo1->dibujar(buffer->Graphics);
+
+			if (portalRegresoMundo1->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+				mundoActual = 2; // Volver al mundo 3
+				jugador->setPosicion(150, 350); // Aparece en el centro del mundo 3
+			}
+		}
+
+		// Portal mundo 2
+		if (portalDerecho->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+			mundoActual = 1; // Mundo 2 (índice 1 en tu arreglo de mundos)
+			jugador->setPosicion(150, 350); // Aparece a la derecha del nuevo portal
+		}
+
+		if (mundoActual == 1) { // Mundo 2
+			portalRegresoMundo2->actualizar(jugador->obtenerRectangulo());
+			portalRegresoMundo2->dibujar(buffer->Graphics);
+
+			if (portalRegresoMundo2->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+				mundoActual = 2; // Volver al mundo 3
+				jugador->setPosicion(850, 350); // Aparece en el centro del mundo 3
+			}
+		}
 
 		bool mostrarGoku = true;
 

@@ -135,6 +135,7 @@
     <ClInclude Include="Cjugador.h" />
     <ClInclude Include="CMundo.h" />
     <ClInclude Include="CPlataformaConstruccion.h" />
+    <ClInclude Include="CPortal.h" />
     <ClInclude Include="CRecurso.h" />
     <ClInclude Include="CRecursoHumano.h" />
     <ClInclude Include="CRecursoTecnologico.h" />

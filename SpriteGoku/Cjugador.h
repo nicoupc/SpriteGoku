@@ -34,6 +34,11 @@ public:
 		ultimaTecla = Abajo;
 	}
 
+	void setPosicion(int nuevoX, int nuevoY) {
+		x = nuevoX;
+		y = nuevoY;
+	}
+
 	void dibujar(BufferedGraphics^ buffer, Bitmap^ bmp, bool invulnerable) {
 		Rectangle posicion = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle aumentoPersonaje = Rectangle(x, y, ancho * 2, alto * 2);
