@@ -1,5 +1,7 @@
 #pragma once
 
+#include "VentanaNombre.h"
+
 namespace SpriteGoku {
 
 	using namespace System;
@@ -148,8 +150,10 @@ namespace SpriteGoku {
 		}
 #pragma endregion
 	private: System::Void btnJugar_Click(System::Object^ sender, System::EventArgs^ e) {
-		// Aquí más adelante abriremos la ventana para ingresar el nombre
-		MessageBox::Show("Aquí se abrirá la ventana para ingresar el nombre del jugador.");
+		VentanaNombre^ ventana = gcnew VentanaNombre();
+		this->Hide();
+		ventana->ShowDialog();
+		this->Show();
 	}
 	private: System::Void btnSalir_Click(System::Object^ sender, System::EventArgs^ e) {
 		Application::Exit();
