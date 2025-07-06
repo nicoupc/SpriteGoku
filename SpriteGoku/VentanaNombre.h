@@ -63,7 +63,7 @@ namespace SpriteGoku {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(58, 51);
+			this->label1->Location = System::Drawing::Point(77, 51);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(127, 16);
 			this->label1->TabIndex = 0;
@@ -71,7 +71,7 @@ namespace SpriteGoku {
 			// 
 			// btnIniciar
 			// 
-			this->btnIniciar->Location = System::Drawing::Point(61, 172);
+			this->btnIniciar->Location = System::Drawing::Point(85, 176);
 			this->btnIniciar->Name = L"btnIniciar";
 			this->btnIniciar->Size = System::Drawing::Size(119, 23);
 			this->btnIniciar->TabIndex = 1;
@@ -81,7 +81,7 @@ namespace SpriteGoku {
 			// 
 			// txtNombre
 			// 
-			this->txtNombre->Location = System::Drawing::Point(80, 106);
+			this->txtNombre->Location = System::Drawing::Point(94, 112);
 			this->txtNombre->Name = L"txtNombre";
 			this->txtNombre->Size = System::Drawing::Size(100, 22);
 			this->txtNombre->TabIndex = 2;

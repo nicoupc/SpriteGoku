@@ -68,6 +68,7 @@ namespace SpriteGoku {
 		CPortal^ portalRegresoMundo2;
 		String^ nombreJugador;
 		bool juegoTerminado = false;
+		int segundosPasados;
 
 		void guardarPuntaje() {
 			int porcentaje = progresoConstruccion;
@@ -87,6 +88,7 @@ namespace SpriteGoku {
 		MyForm(String^ nombre)
 		{
 			this->nombreJugador = nombre;
+			segundosPasados = 0;
 
 			InitializeComponent();
 			//
@@ -102,7 +104,7 @@ namespace SpriteGoku {
 				array<String^>^ lineas = System::IO::File::ReadAllLines(ruta);
 
 				// Paso 4: Procesar cada línea
-				for each(String ^ linea in lineas) {
+				for each (String ^ linea in lineas) {
 					array<String^>^ partes = linea->Split('=');
 					if (partes->Length == 2) {
 						String^ clave = partes[0]->Trim()->ToLower();
@@ -137,7 +139,7 @@ namespace SpriteGoku {
 				MessageBox::Show("No se encontró el archivo PARAMETERS.txt en la carpeta FILES.", "Advertencia", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 			}
 
-
+			relojTiempo->Reset();
 			relojTiempo->Start();
 			mundos = gcnew array<CMundo^>(3);
 			mundos[0] = gcnew CMundo("Mundo1.jpg");
@@ -165,7 +167,7 @@ namespace SpriteGoku {
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
 
-			for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				inventarioTecnologico[tipo] = 0;
 			}
 
@@ -174,7 +176,7 @@ namespace SpriteGoku {
 			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
 			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
 
-			for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 				inventarioHumano[tipo] = 0;
 			}
 
@@ -184,10 +186,10 @@ namespace SpriteGoku {
 			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("TrabajoEnEquipo.png");
 
 			// Inicializar contador de parpadeo
-			for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				contadorParpadeoTec[tipo] = 0;
 			}
-			for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 				contadorParpadeoHum[tipo] = 0;
 			}
 		}
@@ -264,7 +266,6 @@ namespace SpriteGoku {
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::soltarTecla);
 			this->ResumeLayout(false);
-
 		}
 #pragma endregion
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
@@ -343,7 +344,7 @@ namespace SpriteGoku {
 			}
 
 			// Detectar colisión con enemigos
-			for each(CEnemigo ^ enemigo in mundos[mundoActual]->enemigos) {
+			for each (CEnemigo ^ enemigo in mundos[mundoActual]->enemigos) {
 				if (enemigo->getEstado() == EstadoEnemigo::Activo &&
 					d->obtenerRectangulo().IntersectsWith(enemigo->obtenerRectangulo())) {
 					enemigo->eliminar();
@@ -354,7 +355,7 @@ namespace SpriteGoku {
 		}
 
 		// Procesar colisión con aliados
-		for each(CAliado ^ a in mundos[mundoActual]->aliados) {
+		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
 			if (a->estaVisible() && a->colisionaCon(jugador->obtenerRectangulo())) {
 				a->aplicarEfecto(vidas);
 
@@ -378,7 +379,7 @@ namespace SpriteGoku {
 			}
 		}
 
-		for each(CRecurso ^ recurso in mundos[mundoActual]->recursos) {
+		for each (CRecurso ^ recurso in mundos[mundoActual]->recursos) {
 			if (recurso->estaVisible() && recurso->colisionaCon(jugador->obtenerRectangulo())) {
 				recurso->desaparecer();
 
@@ -396,8 +397,8 @@ namespace SpriteGoku {
 		}
 
 		if (mundos[mundoActual]->plataformasConstruccion != nullptr) {
-			for each(CPlataformaConstruccion ^ plataforma in mundos[mundoActual]->plataformasConstruccion) {
-				for each(CEspacioConstruible ^ espacio in plataforma->obtenerEspacios()) {
+			for each (CPlataformaConstruccion ^ plataforma in mundos[mundoActual]->plataformasConstruccion) {
+				for each (CEspacioConstruible ^ espacio in plataforma->obtenerEspacios()) {
 					if (!espacio->estaLleno() && espacio->obtenerRect().IntersectsWith(jugador->obtenerRectangulo())) {
 
 						// Tipo de recurso que este espacio requiere
@@ -436,23 +437,23 @@ namespace SpriteGoku {
 					int plataformasTotales = mundos[2]->plataformasConstruccion->Count;
 					int completadas = 0;
 
-					for each(CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+					for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
 						if (p->estaConstruida()) completadas++;
 					}
 
 					progresoConstruccion = completadas * 25;
 
-					if (progresoConstruccion >= 100) {
-						// Revisar si todas las plataformas ya fueron eliminadas visualmente
+					// PRIMERO: verificar si se ganó
+					if (progresoConstruccion >= 100 && !juegoTerminado) {
 						bool todasEliminadas = true;
-						for each(CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+						for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
 							if (!p->estaEliminada()) {
 								todasEliminadas = false;
 								break;
 							}
 						}
 
-						if (todasEliminadas && !juegoTerminado) {
+						if (todasEliminadas) {
 							juegoTerminado = true;
 							timer1->Enabled = false;
 							guardarPuntaje();
@@ -460,6 +461,7 @@ namespace SpriteGoku {
 							VentanaRanking^ ranking = gcnew VentanaRanking();
 							ranking->ShowDialog();
 							this->Close();
+							return; // IMPORTANTE: salir del método
 						}
 					}
 				}
@@ -468,6 +470,9 @@ namespace SpriteGoku {
 
 		buffer->Graphics->DrawString("Tiempo: " + tiempoRestante.ToString() + "s", fuente, brocha, 5, 5);
 		buffer->Graphics->DrawString("Vidas: " + vidas.ToString(), fuente, Brushes::Red, 5, 30);
+		//System::Drawing::Font^ fuentePequena = gcnew System::Drawing::Font("Arial", 14, FontStyle::Bold);
+		buffer->Graphics->DrawString("Jugador: " + nombreJugador, fuente, Brushes::LightGreen, 5, 55);
+
 		if (escudoActivo) {
 			int tiempoRestante = duracionEscudo - (relojEscudo->ElapsedMilliseconds / 1000);
 			buffer->Graphics->DrawString("ESCUDO: " + tiempoRestante.ToString() + "s", fuente, Brushes::LightBlue, 200, 5);
@@ -482,7 +487,7 @@ namespace SpriteGoku {
 		int sizeIcono = 25;
 		int yHUD = this->ClientSize.Height - (sizeIcono + 8) * iconosTecnologicos->Count - 10;
 
-		for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+		for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 			if (contadorParpadeoTec[tipo] == 0 || (contadorParpadeoTec[tipo] / 5) % 2 == 0) {
 				Bitmap^ icono = iconosTecnologicos[tipo];
 				int cantidad = inventarioTecnologico[tipo];
@@ -500,7 +505,7 @@ namespace SpriteGoku {
 		int yHUD_H = 10;
 		int sizeIcono_H = 25;
 
-		for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+		for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 			if (contadorParpadeoHum[tipo] == 0 || (contadorParpadeoHum[tipo] / 5) % 2 == 0) {
 				Bitmap^ icono = iconosHumanos[tipo];
 				int cantidad = inventarioHumano[tipo];
@@ -513,7 +518,6 @@ namespace SpriteGoku {
 			yHUD_H += sizeIcono_H + 8;
 		}
 
-		static int segundosPasados = 0;
 		int totalSegundos = relojTiempo->ElapsedMilliseconds / 1000;
 
 		if (totalSegundos > segundosPasados) {
