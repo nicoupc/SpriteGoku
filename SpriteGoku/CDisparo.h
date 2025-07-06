@@ -39,7 +39,7 @@ public:
     void dibujar(Graphics^ g) {
         Rectangle destino = Rectangle(x, y, escalaAncho, escalaAlto);
         g->DrawImage(sprite, destino);
-        g->DrawRectangle(Pens::Red, obtenerRectangulo());
+        //g->DrawRectangle(Pens::Red, obtenerRectangulo());
     }
 
     Rectangle obtenerRectangulo() {
