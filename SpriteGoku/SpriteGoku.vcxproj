@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClCompile Include="MenuPrincipal.cpp" />
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="VentanaCreditos.cpp" />
     <ClCompile Include="VentanaNombre.cpp" />
     <ClCompile Include="VentanaRanking.cpp" />
   </ItemGroup>
@@ -149,6 +150,9 @@
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Score.h" />
+    <ClInclude Include="VentanaCreditos.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="VentanaNombre.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -162,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MyForm.resx">
       <DependentUpon>MyForm.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VentanaCreditos.resx">
+      <DependentUpon>VentanaCreditos.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VentanaNombre.resx">
       <DependentUpon>VentanaNombre.h</DependentUpon>

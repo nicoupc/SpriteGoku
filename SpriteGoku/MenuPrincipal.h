@@ -1,6 +1,7 @@
 #pragma once
 
 #include "VentanaNombre.h"
+#include "VentanaCreditos.h"
 
 namespace SpriteGoku {
 
@@ -120,6 +121,7 @@ namespace SpriteGoku {
 			this->btnCreditos->TabIndex = 4;
 			this->btnCreditos->Text = L"Creditos";
 			this->btnCreditos->UseVisualStyleBackColor = true;
+			this->btnCreditos->Click += gcnew System::EventHandler(this, &MenuPrincipal::btnCreditos_Click);
 			// 
 			// btnSalir
 			// 
@@ -166,5 +168,11 @@ namespace SpriteGoku {
 		ventana->ShowDialog();
 		this->Show();
 	}
-};
+	private: System::Void btnCreditos_Click(System::Object^ sender, System::EventArgs^ e) {
+		VentanaCreditos^ ventana = gcnew VentanaCreditos();
+		this->Hide();
+		ventana->ShowDialog();
+		this->Show();
+	}
+	};
 }
