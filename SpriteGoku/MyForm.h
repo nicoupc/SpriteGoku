@@ -269,9 +269,9 @@ namespace SpriteGoku {
 		}
 
 		// Portal de regreso a mundo 1
-		if (portalIzquierdo->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
-			mundoActual = 0; // Mundo 1 (índice 0 en tu arreglo de mundos)
-			jugador->setPosicion(850, 350); // Aparece a la izquierda del nuevo portal
+		if (mundoActual == 2 && portalIzquierdo->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+			mundoActual = 0;
+			jugador->setPosicion(850, 350);
 		}
 
 		if (mundoActual == 0) { // Mundo 1
@@ -285,9 +285,9 @@ namespace SpriteGoku {
 		}
 
 		// Portal mundo 2
-		if (portalDerecho->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
-			mundoActual = 1; // Mundo 2 (índice 1 en tu arreglo de mundos)
-			jugador->setPosicion(150, 350); // Aparece a la derecha del nuevo portal
+		if (mundoActual == 2 && portalDerecho->jugadorPuedeViajar(jugador->obtenerRectangulo())) {
+			mundoActual = 1;
+			jugador->setPosicion(150, 350);
 		}
 
 		if (mundoActual == 1) { // Mundo 2
@@ -433,8 +433,9 @@ namespace SpriteGoku {
 						}
 
 						if (todasEliminadas) {
-							buffer->Graphics->DrawString("¡GANASTE!", fuente, Brushes::Green, 450, 350);
 							timer1->Enabled = false;
+							MessageBox::Show("¡Felicidades, ganaste el juego!", "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
+							Application::Exit(); // Cierra el juego correctamente
 						}
 					}
 				}
@@ -497,8 +498,9 @@ namespace SpriteGoku {
 		}
 
 		if (tiempoRestante <= 0 || vidas <= 0) {
-			buffer->Graphics->DrawString("¡Fin del juego!", fuente, Brushes::Red, 400, 300);
 			timer1->Enabled = false;
+			MessageBox::Show("Has perdido. ¡Inténtalo de nuevo!", "Fin del juego", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+			Application::Exit(); // Cierra el juego correctamente
 		}
 
 		if (!invulnerable && !escudoActivo && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {
