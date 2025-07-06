@@ -147,6 +147,7 @@
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Score.h" />
     <ClInclude Include="VentanaNombre.h">
       <FileType>CppForm</FileType>
     </ClInclude>

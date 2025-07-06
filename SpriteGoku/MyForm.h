@@ -6,6 +6,7 @@
 #include "CPlataformaConstruccion.h"
 #include "CDisparo.h"
 #include "CPortal.h"
+#include "Score.h"
 
 const int ALTURA_HUD = 60;
 
@@ -64,10 +65,27 @@ namespace SpriteGoku {
 		Bitmap^ spritePortalHumano;
 		CPortal^ portalRegresoMundo1;
 		CPortal^ portalRegresoMundo2;
+		String^ nombreJugador;
+
+		void guardarPuntaje() {
+			int porcentaje = progresoConstruccion;
+			int tiempoTotal = relojTiempo->ElapsedMilliseconds / 1000;
+			DateTime ahora = DateTime::Now;
+
+			Score^ nuevo = gcnew Score(nombreJugador, ahora, porcentaje, tiempoTotal);
+			String^ ruta = "FILES/SCORES.bin";
+
+			List<Score^>^ lista = Score::cargarTodos(ruta);
+			lista->Add(nuevo);
+			Score::ordenar(lista);
+			Score::guardarTodos(ruta, lista);
+		}
 
 	public:
-		MyForm(void)
+		MyForm(String^ nombre)
 		{
+			this->nombreJugador = nombre;
+
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -434,8 +452,9 @@ namespace SpriteGoku {
 
 						if (todasEliminadas) {
 							timer1->Enabled = false;
+							guardarPuntaje();
 							MessageBox::Show("¡Felicidades, ganaste el juego!", "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
-							Application::Exit(); // Cierra el juego correctamente
+							this->Close();
 						}
 					}
 				}
@@ -499,8 +518,9 @@ namespace SpriteGoku {
 
 		if (tiempoRestante <= 0 || vidas <= 0) {
 			timer1->Enabled = false;
+			guardarPuntaje();
 			MessageBox::Show("Has perdido. ¡Inténtalo de nuevo!", "Fin del juego", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-			Application::Exit(); // Cierra el juego correctamente
+			this->Close();
 		}
 
 		if (!invulnerable && !escudoActivo && mundos[mundoActual]->detectarColision(jugador->obtenerRectangulo())) {

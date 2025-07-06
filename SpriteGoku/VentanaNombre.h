@@ -108,7 +108,7 @@ namespace SpriteGoku {
 			return;
 		}
 
-		MyForm^ juego = gcnew MyForm();
+		MyForm^ juego = gcnew MyForm(nombre);
 		this->Hide();
 		juego->ShowDialog();
 		this->Close();
