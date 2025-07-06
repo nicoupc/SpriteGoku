@@ -114,6 +114,7 @@ namespace SpriteGoku {
 	private:
 		System::Void btnVolver_Click(System::Object^ sender, System::EventArgs^ e)
 		{
+			this->Close(); // Cierra la ventana actual
 		}
 	};
 }

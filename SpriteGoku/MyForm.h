@@ -455,6 +455,8 @@ namespace SpriteGoku {
 							timer1->Enabled = false;
 							guardarPuntaje();
 							MessageBox::Show("¡Felicidades, ganaste el juego!", "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
+							VentanaRanking^ ranking = gcnew VentanaRanking();
+							ranking->ShowDialog();
 							this->Close();
 						}
 					}
@@ -521,6 +523,8 @@ namespace SpriteGoku {
 			timer1->Enabled = false;
 			guardarPuntaje();
 			MessageBox::Show("Has perdido. ¡Inténtalo de nuevo!", "Fin del juego", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+			VentanaRanking^ ranking = gcnew VentanaRanking();
+			ranking->ShowDialog();
 			this->Close();
 		}
 
