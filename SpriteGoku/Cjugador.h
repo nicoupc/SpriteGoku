@@ -50,7 +50,7 @@ public:
 		}
 
 		// Dibuja el cuadrado rojo si querés seguir visualizando colisión
-		buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
+		//buffer->Graphics->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo());
 
 		x += dx;
 		y += dy;

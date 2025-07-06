@@ -31,7 +31,7 @@ public:
 
 		Rectangle destino = Rectangle(x, y, escala, escala);
 		g->DrawImage(sprite, destino);
-		g->DrawRectangle(gcnew Pen(Color::Red), obtenerRectangulo());
+		//g->DrawRectangle(gcnew Pen(Color::Red), obtenerRectangulo());
 	}
 
 	virtual Rectangle obtenerRectangulo() {

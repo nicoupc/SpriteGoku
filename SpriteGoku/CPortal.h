@@ -51,7 +51,7 @@ public:
         g->DrawImage(sprite, destino, src, GraphicsUnit::Pixel);
 
         // Borde rojo para depuración
-        g->DrawRectangle(gcnew Pen(Color::Red, 2), destino);
+        //g->DrawRectangle(gcnew Pen(Color::Red, 2), destino);
     }
 
     Rectangle obtenerRectangulo() {

@@ -148,7 +148,7 @@ public:
 		Rectangle origen = Rectangle(indiceX * ancho, indiceY * alto, ancho, alto);
 		Rectangle destino = Rectangle(x, y, escalaAncho, escalaAlto);
 		g->DrawImage(sprite, destino, origen, GraphicsUnit::Pixel);
-		g->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo()); // Dibujar cuadrado rojo de colisión
+		//g->DrawRectangle(gcnew Pen(Color::Red, 2), obtenerRectangulo()); // Dibujar cuadrado rojo de colisión
 	}
 
 	Rectangle obtenerRectangulo() {
