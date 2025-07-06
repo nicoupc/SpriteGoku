@@ -67,6 +67,7 @@ namespace SpriteGoku {
 		CPortal^ portalRegresoMundo1;
 		CPortal^ portalRegresoMundo2;
 		String^ nombreJugador;
+		bool juegoTerminado = false;
 
 		void guardarPuntaje() {
 			int porcentaje = progresoConstruccion;
@@ -101,7 +102,7 @@ namespace SpriteGoku {
 				array<String^>^ lineas = System::IO::File::ReadAllLines(ruta);
 
 				// Paso 4: Procesar cada línea
-				for each (String ^ linea in lineas) {
+				for each(String ^ linea in lineas) {
 					array<String^>^ partes = linea->Split('=');
 					if (partes->Length == 2) {
 						String^ clave = partes[0]->Trim()->ToLower();
@@ -164,7 +165,7 @@ namespace SpriteGoku {
 			bmp = gcnew Bitmap("Goku.png");
 			bmpEscudo = gcnew Bitmap("GokuEvolucionado.png");
 
-			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+			for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				inventarioTecnologico[tipo] = 0;
 			}
 
@@ -173,7 +174,7 @@ namespace SpriteGoku {
 			iconosTecnologicos[TipoRecursoTecnologico::BigData] = gcnew Bitmap("BigData.png");
 			iconosTecnologicos[TipoRecursoTecnologico::EnergiaSostenible] = gcnew Bitmap("Panel.png");
 
-			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+			for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 				inventarioHumano[tipo] = 0;
 			}
 
@@ -183,10 +184,10 @@ namespace SpriteGoku {
 			iconosHumanos[TipoHabilidadHumana::TrabajoEnEquipo] = gcnew Bitmap("TrabajoEnEquipo.png");
 
 			// Inicializar contador de parpadeo
-			for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+			for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 				contadorParpadeoTec[tipo] = 0;
 			}
-			for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+			for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 				contadorParpadeoHum[tipo] = 0;
 			}
 		}
@@ -342,7 +343,7 @@ namespace SpriteGoku {
 			}
 
 			// Detectar colisión con enemigos
-			for each (CEnemigo ^ enemigo in mundos[mundoActual]->enemigos) {
+			for each(CEnemigo ^ enemigo in mundos[mundoActual]->enemigos) {
 				if (enemigo->getEstado() == EstadoEnemigo::Activo &&
 					d->obtenerRectangulo().IntersectsWith(enemigo->obtenerRectangulo())) {
 					enemigo->eliminar();
@@ -353,7 +354,7 @@ namespace SpriteGoku {
 		}
 
 		// Procesar colisión con aliados
-		for each (CAliado ^ a in mundos[mundoActual]->aliados) {
+		for each(CAliado ^ a in mundos[mundoActual]->aliados) {
 			if (a->estaVisible() && a->colisionaCon(jugador->obtenerRectangulo())) {
 				a->aplicarEfecto(vidas);
 
@@ -377,7 +378,7 @@ namespace SpriteGoku {
 			}
 		}
 
-		for each (CRecurso ^ recurso in mundos[mundoActual]->recursos) {
+		for each(CRecurso ^ recurso in mundos[mundoActual]->recursos) {
 			if (recurso->estaVisible() && recurso->colisionaCon(jugador->obtenerRectangulo())) {
 				recurso->desaparecer();
 
@@ -395,8 +396,8 @@ namespace SpriteGoku {
 		}
 
 		if (mundos[mundoActual]->plataformasConstruccion != nullptr) {
-			for each (CPlataformaConstruccion ^ plataforma in mundos[mundoActual]->plataformasConstruccion) {
-				for each (CEspacioConstruible ^ espacio in plataforma->obtenerEspacios()) {
+			for each(CPlataformaConstruccion ^ plataforma in mundos[mundoActual]->plataformasConstruccion) {
+				for each(CEspacioConstruible ^ espacio in plataforma->obtenerEspacios()) {
 					if (!espacio->estaLleno() && espacio->obtenerRect().IntersectsWith(jugador->obtenerRectangulo())) {
 
 						// Tipo de recurso que este espacio requiere
@@ -435,7 +436,7 @@ namespace SpriteGoku {
 					int plataformasTotales = mundos[2]->plataformasConstruccion->Count;
 					int completadas = 0;
 
-					for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+					for each(CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
 						if (p->estaConstruida()) completadas++;
 					}
 
@@ -444,14 +445,15 @@ namespace SpriteGoku {
 					if (progresoConstruccion >= 100) {
 						// Revisar si todas las plataformas ya fueron eliminadas visualmente
 						bool todasEliminadas = true;
-						for each (CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
+						for each(CPlataformaConstruccion ^ p in mundos[2]->plataformasConstruccion) {
 							if (!p->estaEliminada()) {
 								todasEliminadas = false;
 								break;
 							}
 						}
 
-						if (todasEliminadas) {
+						if (todasEliminadas && !juegoTerminado) {
+							juegoTerminado = true;
 							timer1->Enabled = false;
 							guardarPuntaje();
 							MessageBox::Show("¡Felicidades, ganaste el juego!", "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -480,7 +482,7 @@ namespace SpriteGoku {
 		int sizeIcono = 25;
 		int yHUD = this->ClientSize.Height - (sizeIcono + 8) * iconosTecnologicos->Count - 10;
 
-		for each (TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
+		for each(TipoRecursoTecnologico tipo in Enum::GetValues(TipoRecursoTecnologico::typeid)) {
 			if (contadorParpadeoTec[tipo] == 0 || (contadorParpadeoTec[tipo] / 5) % 2 == 0) {
 				Bitmap^ icono = iconosTecnologicos[tipo];
 				int cantidad = inventarioTecnologico[tipo];
@@ -498,7 +500,7 @@ namespace SpriteGoku {
 		int yHUD_H = 10;
 		int sizeIcono_H = 25;
 
-		for each (TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
+		for each(TipoHabilidadHumana tipo in Enum::GetValues(TipoHabilidadHumana::typeid)) {
 			if (contadorParpadeoHum[tipo] == 0 || (contadorParpadeoHum[tipo] / 5) % 2 == 0) {
 				Bitmap^ icono = iconosHumanos[tipo];
 				int cantidad = inventarioHumano[tipo];
@@ -519,7 +521,8 @@ namespace SpriteGoku {
 			segundosPasados = totalSegundos;
 		}
 
-		if (tiempoRestante <= 0 || vidas <= 0) {
+		if ((tiempoRestante <= 0 || vidas <= 0) && !juegoTerminado) {
+			juegoTerminado = true;
 			timer1->Enabled = false;
 			guardarPuntaje();
 			MessageBox::Show("Has perdido. ¡Inténtalo de nuevo!", "Fin del juego", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
